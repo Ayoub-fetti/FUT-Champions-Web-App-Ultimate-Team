@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Itim&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&display=swap');
+
+body{
+    font-family: "Bebas Neue", sans-serif;
+    width: 100%;
+    height: 1200px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(img/home.webp);
+    background-repeat: no-repeat;
+    opacity: 1;
+    background-size: cover;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+nav{
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.nav_search{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2F9B75;
+    padding: 10px 20px;
+    margin-right: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    gap: 8px;
+    width: auto;
+    height: 20px;
+    
+}
+.logo{
+    height: 70px;
+    width: 70px;
+    margin-left: 50px;
+    padding: 10px;
+}
+.nav_input{
+    margin: 5px 5px;
+    background-color: transparent;
+    cursor: pointer;
+    border: 20px;
+    height: 20px;
+    color: beige;
+}
+.nav_input::placeholder{
+    color: white;
+}
+.nav_title{
+    color: white;
+}
+.search_icon{
+    margin: 5px 5px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+.contact_us{
+    color: #2F9B75;
+    margin-right: 50px;
+}
+.contact_us:hover{
+    color: white;
+    border-bottom: 2px solid #2F9B75;
+}
+
+.container{
+    width: 50%;
+    height: auto;
+    margin-top: 200px;
+    margin-left: 40px;
+}
+.terrain_img{
+    height: 700px;
+
+}
+.terrain {
+    position: relative;
+}
+
+.terrain_img {
+    width: 100%;
+    height: auto;
+    
+}
+
+.players {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+}
+
+.player {
+    position: absolute;
+    width: 300px; 
+    height: auto;
+    transform: translate(-50%, -50%);
+}
+
+/* 1-4-3-3 */
+
+/* Position GK */
+.goalkeeper { bottom: -35%; left: 50%; }
+
+/* Position CB */
+.left-back { bottom: -2%; left: 20%; }
+.center-back-left { bottom: -8%; left: 40%; }
+.center-back-right { bottom: -8%; left: 60%; }
+.right-back { bottom: -2%; left: 80%; }
+
+/* Position CM */
+.left-mid { bottom: 25%; left: 30%; }
+.center-mid { bottom: 20%; left: 50%; }
+.right-mid { bottom: 25%; left: 70%; }
+
+/* Position ST */
+.left-wing { bottom: 58%; left: 30%; }
+.striker { bottom: 60%; left: 50%; }
+.right-wing { bottom: 58%; left: 70%; }
+
+.player:hover{
+    filter: drop-shadow(2px 8px 22px #2F9B75);
+}
+
+
+/* 1-4-4-2 */
+
+/* Position CB 1-4-4-2 */
+.left-back-442 { bottom: -2%; left: 20%; }
+.center-back-left-442 { bottom: -8%; left: 40%; }
+.center-back-right-442 { bottom: -8%; left: 60%; }
+.right-back-442 { bottom: -2%; left: 80%; }
+
+/* Position CM 1-4-4-2 */
+.left-mid-442 { bottom: 30%; left: 20%; }
+.center-mid-left-442 { bottom: 30%; left: 40%; }
+.center-mid-right-442 { bottom: 30%; left: 60%; }
+.right-mid-442 { bottom: 30%; left: 80%; }
+
+/* Position ST 1-4-4-2 */
+.striker-left { bottom: 60%; left: 35%; }
+.striker-right { bottom: 60%; left: 65%; }
