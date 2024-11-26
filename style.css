@@ -80,9 +80,13 @@ nav{
     height: auto;
     margin-top: 200px;
     margin-left: 40px;
+    display: flex;
+    justify-content: space-between;
 }
 .terrain_img{
     height: 700px;
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 1));
+
 
 }
 .terrain {
@@ -111,46 +115,65 @@ nav{
     transform: translate(-50%, -50%);
 }
 
-/* 1-4-3-3 */
-
-/* Position GK */
-.goalkeeper { bottom: -35%; left: 50%; }
-
-/* Position CB */
-.left-back { bottom: -2%; left: 20%; }
-.center-back-left { bottom: -8%; left: 40%; }
-.center-back-right { bottom: -8%; left: 60%; }
-.right-back { bottom: -2%; left: 80%; }
-
-/* Position CM */
-.left-mid { bottom: 25%; left: 30%; }
-.center-mid { bottom: 20%; left: 50%; }
-.right-mid { bottom: 25%; left: 70%; }
-
-/* Position ST */
-.left-wing { bottom: 58%; left: 30%; }
-.striker { bottom: 60%; left: 50%; }
-.right-wing { bottom: 58%; left: 70%; }
-
 .player:hover{
     filter: drop-shadow(2px 8px 22px #2F9B75);
 }
 
 
-/* 1-4-4-2 */
+.form {
+    position: absolute;
+    right: 100px; 
+    top: 0px; 
+    background-color: #1a1a1a; 
+    padding: 0px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px; 
+    -webkit-box-shadow: 0px 0px 34px -3px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 34px -3px rgba(255,255,255,1);
+    box-shadow: 0px 0px 34px -3px rgba(255,255,255,1);
+}
+.text_form{
+    color: white;
+    font-weight: 500;
+}
+.form input, .form select {
+    display: block;
+    margin-bottom: 20px;
+    padding: 5px 5px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.propriete1{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px; 
+}
+.propriete2{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px; 
+}
 
-/* Position CB 1-4-4-2 */
-.left-back-442 { bottom: -2%; left: 20%; }
-.center-back-left-442 { bottom: -8%; left: 40%; }
-.center-back-right-442 { bottom: -8%; left: 60%; }
-.right-back-442 { bottom: -2%; left: 80%; }
+.ajout_img{
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+.btn_add{
+    margin-bottom: 15px;
+    padding: 5px 5px;
+    border-radius: 10px;
+    background-color: #2F9B75;
+    font-weight: 700;
+    color: white;
+    height: 40px;
+    width: 150px;
+    cursor: pointer;   
+}
+.btn_add:hover{
+    color: #2F9B75;
+    background-color: whitesmoke;
+}
 
-/* Position CM 1-4-4-2 */
-.left-mid-442 { bottom: 30%; left: 20%; }
-.center-mid-left-442 { bottom: 30%; left: 40%; }
-.center-mid-right-442 { bottom: 30%; left: 60%; }
-.right-mid-442 { bottom: 30%; left: 80%; }
-
-/* Position ST 1-4-4-2 */
-.striker-left { bottom: 60%; left: 35%; }
-.striker-right { bottom: 60%; left: 65%; }

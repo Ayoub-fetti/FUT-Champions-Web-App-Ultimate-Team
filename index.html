@@ -19,52 +19,134 @@
     <section class="container">
         <div class="terrain">
             <img src="img/terrain-fiddle.webp" alt="terrain" class="terrain_img">
-            <!-- Formation 1-4-3-3 -->
-            <div class="players" style="display: block;">
+            <div class="players">
                 <!-- GK  -->
                 <img src="img/card_empty.webp" alt="player" class="player goalkeeper">
                 
                 <!-- CB  -->
-                <img src="img/card_empty.webp" alt="player" class="player defender left-back">
-                <img src="img/card_empty.webp" alt="player" class="player defender center-back-left">
-                <img src="img/card_empty.webp" alt="player" class="player defender center-back-right">
-                <img src="img/card_empty.webp" alt="player" class="player defender right-back">
+                <img src="img/card_empty.webp" alt="player" class="player defender def1">
+                <img src="img/card_empty.webp" alt="player" class="player defender def2">
+                <img src="img/card_empty.webp" alt="player" class="player defender def3">
+                <img src="img/card_empty.webp" alt="player" class="player defender def4">
                 
                 <!-- CM  -->
-                <img src="img/card_empty.webp" alt="player" class="player midfielder left-mid">
-                <img src="img/card_empty.webp" alt="player" class="player midfielder center-mid">
-                <img src="img/card_empty.webp" alt="player" class="player midfielder right-mid">
+                <img src="img/card_empty.webp" alt="player" class="player midfielder mid1">
+                <img src="img/card_empty.webp" alt="player" class="player midfielder mid2">
+                <img src="img/card_empty.webp" alt="player" class="player midfielder mid3">
+                <img src="img/card_empty.webp" alt="player" class="player midfielder mid4">
                 
                 <!-- ST  -->
-                <img src="img/card_empty.webp" alt="player" class="player forward left-wing">
-                <img src="img/card_empty.webp" alt="player" class="player forward striker">
-                <img src="img/card_empty.webp" alt="player" class="player forward right-wing">
+                <img src="img/card_empty.webp" alt="player" class="player forward st1">
+                <img src="img/card_empty.webp" alt="player" class="player forward st2">
+                <img src="img/card_empty.webp" alt="player" class="player forward st3">
             </div>
-
-
-              <!-- 1-4-4-2 -->
-    <div class="players formation-442" style="display:none;">
-        <!-- GK -->
-        <img src="img/card_empty.webp" alt="player" class="player goalkeeper">
-        
-        <!-- CB -->
-        <img src="img/card_empty.webp" alt="player" class="player defender left-back-442">
-        <img src="img/card_empty.webp" alt="player" class="player defender center-back-left-442">
-        <img src="img/card_empty.webp" alt="player" class="player defender center-back-right-442">
-        <img src="img/card_empty.webp" alt="player" class="player defender right-back-442">
-        
-        <!-- CM -->
-        <img src="img/card_empty.webp" alt="player" class="player midfielder left-mid-442">
-        <img src="img/card_empty.webp" alt="player" class="player midfielder center-mid-left-442">
-        <img src="img/card_empty.webp" alt="player" class="player midfielder center-mid-right-442">
-        <img src="img/card_empty.webp" alt="player" class="player midfielder right-mid-442">
-        
-        <!-- ST -->
-        <img src="img/card_empty.webp" alt="player" class="player forward striker-left">
-        <img src="img/card_empty.webp" alt="player" class="player forward striker-right">
-    </div>
-
         </div>
+        
+        <!-- Formulaire pour choisir les joueurs -->
+    <div class="form">
+
+        <h3 class="text_form">Choisir la formation dy l'equipe</h3>
+        <select id="formation" required>
+            <option value="1-4-3-3">1-4-3-3</option>
+            <option value="1-4-4-2">1-4-4-2</option>
+        </select>
+
+        <h3 class="text_form">Entrez le Nom du joueur</h3>
+        <input type="text" placeholder="Nom du joueur" required>
+
+        <h3 class="text_form">Choisir la position du joueur</h3>
+        <select id="position" required>
+            <option value="Gk">Gardient (GK)</option>
+            <option value="CB">Défenseur (CB)</option>
+            <option value="LB">Arriere Gauche (LB)</option>
+            <option value="RB">Arriere Droit (RB)</option>
+            <option value="CM">Milieu terrain (CM)</option>
+            <option value="ST">Attaquant (ST)</option>  
+            <option value="LW">Attaquant Gauche (LW)</option>   
+            <option value="LR">Attaquant Droit (LR)</option>
+        </select>
+
+         <h3 class="text_form">Choisir la nationalité dy joueur</h3>
+        <Select id="nationalite" required>
+                    <option value="argentina">Argentina</option>
+                    <option value="belgium">Belgium</option>
+                    <option value="brazil"> Brazil</option>
+                    <option value="canada"> Canada</option>
+                    <option value="croatia">Croatia</option>
+                    <option value="danemark">Danemark</option>
+                    <option value="egypt">Egypt</option>
+                    <option value="england">Englend</option>
+                    <option value="france">France</option>
+                    <option value="germany">Germany</option>
+                    <option value="italy">Italie</option>
+                    <option value="mexique">Mexique</option>
+                    <option value="morocco">Morocco</option>
+                    <option value="netherlands">Netherlands</option>
+                    <option value="norway">Norway</option>
+                    <option value="portugal">Portugal</option>
+                    <option value="slovenia">Slovenia</option>
+                    <option value="spain">Spain</option>
+                    <option value="uruguay">Uruguay</option>
+                    <option value="usa">Usa</option>
+        </Select>
+
+        <h3 class="text_form">Choisir le club du joueur</h3>
+        <select id="club" required>
+                    <option value="real-madrid">Real Madrid</option>
+                    <option value="barcelona">Barcelona</option>
+                    <option value="atletico-madrid">Atletico Madrid</option>
+                    <option value="sevilla">Sevilla</option>
+                    <option value="manchester-united">Manchester United</option>
+                    <option value="liverpool">Liverpool</option>
+                    <option value="chelsea">Chelsea</option>
+                    <option value="manchester-city">Manchester City</option>
+                    <option value="arsenal">Arsenal</option>
+                    <option value="tottenham-hotspur">Tottenham Hotspur</option>
+                    <option value="leeds-united">Leeds United</option>
+                    <option value="newcastle-united">Newcastle United</option>
+                    <option value="bayern-munich">Bayern Munich</option>
+                    <option value="borussia-dortmund">Borussia Dortmund</option>
+                    <option value="juventus">Juventus</option>
+                    <option value="ac-milan">AC Milan</option>
+                    <option value="inter-milan">Inter Milan</option>
+                    <option value="napoli">Napoli</option>
+                    <option value="roma">AS Roma</option>
+                    <option value="paris-saint-germain">Paris Saint-Germain</option>
+                    <option value="ajax">Ajax</option>
+                    <option value="galatasaray">Galatasaray</option>
+                    <option value="fenerbahce">Fenerbahçe</option>
+                    <option value="celtic">Celtic</option>
+                    <option value="rangers">Rangers</option>
+                    <option value="flamengo">Flamengo</option>
+                    <option value="river-plate">River Plate</option>
+                    <option value="boca-juniors">Boca Juniors</option>
+                    <option value="al-ahly">Al Ahly</option>
+                    <option value="zamalek">Zamalek</option>
+        </select>
+
+        <h3 class="text_form"> Remplire les Propriétés du joueur</h3>
+        <div class="propriete1">
+            <input type="number" placeholder="PAC (Vitesse)" class="PAC" max="99" min="0" required>
+            <input type="number" placeholder="SHO (Tirs)" class="SHO" max="99" min="0" required>
+            <input type="number" placeholder="PAS (Passes)" class="PAS" max="99" min="0" required>
+        </div>
+        <div class="propriete2">
+            <input type="number" placeholder="DRI (Dribble)" class="DRI" max="99" min="0" required>
+            <input type="number" placeholder="DEF (Défense)" class="DEF" max="99" min="0" required>
+            <input type="number" placeholder="PHY (Physique)" class="PHY" max="99" min="0" required>
+        </div>
+
+        <!-- la note generale du card  -->
+        <h3 class="text_form"> Remplire le note generale du joueur</h3>
+        <input type="number" placeholder="Note Générale" class="note" max="100" min="0" required>
+
+        <!-- ajouter l'image  -->
+         <h3 class="text_form"> Ajouter l'image du joueur</h3>
+         <input type="file" class="ajout_img">
+
+        <button type="submit" class="btn_add">Ajouter Joueur</button>
+
+    </div>
     </section>  
 
 
@@ -97,5 +179,6 @@
 
 
 <script src="script.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
