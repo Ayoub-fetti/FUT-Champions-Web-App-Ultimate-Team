@@ -74,3 +74,68 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialisation avec la formation par défaut
     updatePositions('1-4-3-3');
 });
+
+
+// stocker tout les donnes du form dans local storage :
+
+document.querySelector('.btn_add').addEventListener('click', function(event) {
+    event.preventDefault(); // empeche le rechargement de la page
+
+    // Recuperer les valeurs du form
+    const formation = document.getElementById('formation').value;
+    const joueurNom = document.querySelector('input[placeholder="Nom du joueur"]').value;
+    const position = document.getElementById('position').value;
+    const nationalite = document.getElementById('nationalite').value;
+    const club = document.getElementById('club').value;
+    const PAC = document.querySelector('.PAC').value;
+    const SHO = document.querySelector('.SHO').value;
+    const PAS = document.querySelector('.PAS').value;
+    const DRI = document.querySelector('.DRI').value;
+    const DEF = document.querySelector('.DEF').value;
+    const PHY = document.querySelector('.PHY').value;
+    const note = document.querySelector('.note').value;
+    const imageInput = document.querySelector('.ajout_img');
+
+    // check si  image est  sélectionnee
+    if (imageInput.files && imageInput.files[0]) {
+        const file = imageInput.files[0];
+        const reader = new FileReader();
+
+        // Convertir le fichier image en base64
+        reader.onload = function(e) {
+            const joueur = {
+                formation,
+                joueurNom,
+                position,
+                nationalite,
+                club,
+                stats: {
+                    PAC,
+                    SHO,
+                    PAS,
+                    DRI,
+                    DEF,
+                    PHY
+                },
+                note,
+                image: e.target.result // Ajouter l'image en base64
+            };
+
+            // recuperer les joueurs existants du local storage ou initialiser un tableau vide
+            let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
+
+            // Ajouter le nouveau joueur au tableau
+            joueurs.push(joueur);
+
+            // Stocker le tableau mis a jour dans le local storage
+            localStorage.setItem('joueurs', JSON.stringify(joueurs));
+
+            // reinitialiser le formulaire apres ajout
+            document.get('form').reset();
+        };
+
+        reader.readAsDataURL(file); // Lire le fichier en tant que Data URL
+    } else {
+        alert("Veuillez sélectionner une image.");
+    }
+});

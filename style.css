@@ -131,9 +131,7 @@ nav{
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 400px; 
-    -webkit-box-shadow: 0px 0px 34px -3px rgba(255,255,255,1);
-    -moz-box-shadow: 0px 0px 34px -3px rgba(255,255,255,1);
-    box-shadow: 0px 0px 34px -3px rgba(255,255,255,1);
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 1));
 }
 .text_form{
     color: white;
@@ -178,4 +176,22 @@ nav{
     color: #2F9B75;
     background-color: whitesmoke;
 }
+
+.banque{
+    height: 400px;
+    width: 60%;
+    background-color: #1a1a1a;
+    margin-left: 20px;
+    margin-top: 60px;
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 1));
+    display: grid;
+    border-radius: 20px;
+}
+.reserve_text{
+    color: whitesmoke;
+    height: 35px;
+    width: 170px;
+    margin-left: 20px;
+}
+
 
