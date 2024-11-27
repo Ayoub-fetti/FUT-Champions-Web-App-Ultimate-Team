@@ -119,6 +119,7 @@ nav{
 
 .player:hover{
     filter: drop-shadow(2px 8px 22px #2F9B75);
+    cursor: pointer;
 }
 
 
@@ -178,8 +179,8 @@ nav{
 }
 
 .banque{
-    height: 400px;
-    width: 60%;
+    height: 300px;
+    width: 55%;
     background-color: #1a1a1a;
     margin-left: 20px;
     margin-top: 60px;
@@ -194,4 +195,164 @@ nav{
     margin-left: 20px;
 }
 
+.banque {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.joueur-card {
+    position: absolute;
+    width: 200px;
+    height: 300px; /* Hauteur fixe ajoutée */
+    margin: 10px;
+    top: 50px;
+}
+
+.card-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.card-bg {
+    width: 100%;
+    height: 100%; /* Changé de auto à 100% */
+    object-fit: cover; /* Ajouté pour couvrir tout l'espace */
+}
+
+.card-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box; /* Ajouté pour inclure le padding dans la largeur */
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Ajouté */
+    width: 90%;
+    height: 40px; /* Hauteur fixe ajoutée */
+    margin-bottom: 5px; /* Ajouté */
+}
+
+.rating {
+    font-size: 22px;
+    font-weight: bold;
+    color: black;
+    position: absolute;
+    top: 60px;
+    left: 24px;
+}
+
+.position {
+    font-size: 16px;
+    color: black;
+    position: absolute;
+    top: 85px;
+    left: 28px;
+}
+
+.nation-flag{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    position: absolute;
+    top: 110px;
+    left: 25px;
+}
+.club-logo{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    position: absolute;
+    top: 135px;
+    left: 25px;
+}
+
+.player-image-container {
+    width: 60%;
+    height: 120px; /* Hauteur fixe ajoutée */
+    margin: 5px 0;
+    display: flex; /* Ajouté */
+    justify-content: center; /* Ajouté */
+    align-items: center; /* Ajouté */
+}
+
+.player-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.player-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    width: 90%;
+    position: absolute;
+    top: 180px; 
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    width: 85%;
+    margin-top: 5px;
+    padding: 0 10px; /* Ajouté */
+}
+
+.stats-left{
+    display: flex;
+    flex-direction: column;
+
+}
+.stats-right{
+    display: flex;
+    flex-direction: column;
+}
+
+.stat {
+    display: flex;
+    gap: 10px;
+    color: black;
+    font-size: 14px; /* Réduit de 14px à 12px */
+    align-items: center; /* Ajouté */
+    margin-right: 10px;
+}
+
+.stat span {
+    font-weight: bold;
+    min-width: 20px; /* Ajouté pour aligner les stats */
+    text-align: right; /* Ajouté */
+}
+.btn_delete{
+    color: #DFBE6F;
+    background-color:transparent;
+    font-weight: 600;
+    font-size: 20px;
+    border: none;
+    border-radius: 50%;
+    position: absolute;
+    right:-13px;
+    top:60px;
+    cursor: pointer;
+}
+.btn_edit{
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    right: -15px;
+    top: 90px;
+    cursor: pointer;
+}
 

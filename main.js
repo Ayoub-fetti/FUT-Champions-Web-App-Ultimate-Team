@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+   
     const formationSelect = document.getElementById('formation');
     
     function updatePositions(formation) {
@@ -76,10 +77,140 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// stocker tout les donnes du form dans local storage :
 
+
+
+
+
+        
+// fonction pour afficher les cartes de joueur apres la creation du form (f.principale)
+// ************************************************************************************
+function displayPlayers() {
+    const banqueSection = document.querySelector('.banque');
+    banqueSection.innerHTML = '<h1 class="reserve_text">Réserve de joueurs :</h1>'; 
+
+    const joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
+
+    joueurs.forEach((joueur, index) => {
+        const joueurCard = document.createElement('div');
+        joueurCard.classList.add('joueur-card');
+
+        joueurCard.innerHTML = `
+            <div class="card-container">
+                <div class="card-background">
+                    <img src="img/card_normal.webp" alt="card background" class="card-bg">
+                    <div class="card-content">
+                        <div class="card-top">
+                            <span class="rating">${joueur.note}</span>
+                            <span class="position">${joueur.position}</span>
+                            <img src="img/flag/${joueur.nationalite}.png" alt="${joueur.nationalite}" class="nation-flag">
+                            <img src="img/clubs/${joueur.club}.png" alt="${joueur.club}" class="club-logo">
+                        </div>
+                        
+                        <div class="player-image-container">
+                            <img src="${joueur.image}" alt="${joueur.joueurNom}" class="player-image">
+                        </div>
+                        
+                        <div class="player-name">${joueur.joueurNom}</div>
+                        
+                        <div class="stats-container">
+                            <div class="stats-left">
+                                <div class="stat"><span>${joueur.stats.PAC}</span> PAC</div>
+                                <div class="stat"><span>${joueur.stats.SHO}</span> SHO</div>
+                                <div class="stat"><span>${joueur.stats.PAS}</span> PAS</div>
+                            </div>
+                            <div class="stats-right">
+                                <div class="stat"><span>${joueur.stats.DRI}</span> DRI</div>
+                                <div class="stat"><span>${joueur.stats.DEF}</span> DEF</div>
+                                <div class="stat"><span>${joueur.stats.PHY}</span> PHY</div>
+                            </div>
+                        
+                        <button class="btn_delete" data-index="${index}">X</button>
+                        <button class="btn_edit" data-index="${index}"><i class="fa-solid fa-pen-to-square fa-lg edit" style="color: #DFBE6F;"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+        banqueSection.appendChild(joueurCard);
+    });
+
+
+        // Ajouter l'ecouteur d'evenements pour les boutons de suppression
+        const deleteButtons = document.querySelectorAll('.btn_delete');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                deletePlayer(index);
+            });
+        });
+                // Ajouter l'ecouteur d'evenements pour les boutons de modification
+                const editButtons = document.querySelectorAll('.btn_edit');
+                editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                editPlayer(index);
+                    });
+                });
+    }
+
+
+
+
+
+
+
+// Fonction pour supprimer un joueur
+// *********************************
+
+function deletePlayer(index) {
+    let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
+    joueurs.splice(index, 1); // Supprime le joueur à l'index spécifié
+    localStorage.setItem('joueurs', JSON.stringify(joueurs)); // Met à jour le localStorage
+    displayPlayers(); // Réaffiche la liste des joueurs
+}
+
+
+// Fonction pour modifier un joueur
+// ********************************
+
+function editPlayer(index) {
+    let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
+    const joueur = joueurs[index];
+
+    console.log("Editing player:", joueur);
+
+    // Remplir le form avec les informations du joueur
+    document.querySelector('input[placeholder="Nom du joueur"]').value = joueur.joueurNom;
+    document.getElementById('position').value = joueur.position;
+    document.getElementById('nationalite').value = joueur.nationalite;
+    document.getElementById('club').value = joueur.club;
+    document.querySelector('.PAC').value = joueur.stats.PAC;
+    document.querySelector('.SHO').value = joueur.stats.SHO;
+    document.querySelector('.PAS').value = joueur.stats.PAS;
+    document.querySelector('.DRI').value = joueur.stats.DRI;
+    document.querySelector('.DEF').value = joueur.stats.DEF;
+    document.querySelector('.PHY').value = joueur.stats.PHY;
+    document.querySelector('.note').value = joueur.note;
+
+    // Ajouter un attribut data-index pour savoir quel joueur on modifie
+    const addButton = document.querySelector('.btn_add');
+    addButton.setAttribute('data-index', index);
+}
+
+
+
+
+
+
+
+
+// stocker tout les donnes du form dans local storage (localStorage)
+// *****************************************************************
 document.querySelector('.btn_add').addEventListener('click', function(event) {
     event.preventDefault(); // empeche le rechargement de la page
+
+    // REcupErer l'index du joueur Modifier, s'il existe
+    const index = this.getAttribute('data-index');
 
     // Recuperer les valeurs du form
     const formation = document.getElementById('formation').value;
@@ -96,12 +227,11 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
     const note = document.querySelector('.note').value;
     const imageInput = document.querySelector('.ajout_img');
 
-    // check si  image est  sélectionnee
+    // check si  image est  selectionnee
     if (imageInput.files && imageInput.files[0]) {
         const file = imageInput.files[0];
         const reader = new FileReader();
 
-        // Convertir le fichier image en base64
         reader.onload = function(e) {
             const joueur = {
                 formation,
@@ -118,24 +248,44 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
                     PHY
                 },
                 note,
-                image: e.target.result // Ajouter l'image en base64
+                image: e.target.result
             };
 
-            // recuperer les joueurs existants du local storage ou initialiser un tableau vide
             let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
 
-            // Ajouter le nouveau joueur au tableau
-            joueurs.push(joueur);
+            if (index !== null && !isNaN(index)) {
+                // Mis aa jour le joueur existant
+                joueurs[index] = joueur;
+                document.querySelector('.btn_add').removeAttribute('data-index'); 
+            } else {
+                // ajouter un nouveau joueur
+                joueurs.push(joueur);
+            }
 
-            // Stocker le tableau mis a jour dans le local storage
+
             localStorage.setItem('joueurs', JSON.stringify(joueurs));
 
-            // reinitialiser le formulaire apres ajout
-            document.get('form').reset();
+            // reinitialiser le formulaire
+            document.forms[0].reset();
+            
+            // Afficher les joueurs immediatement
+            displayPlayers();
         };
 
-        reader.readAsDataURL(file); // Lire le fichier en tant que Data URL
+        reader.readAsDataURL(file);
     } else {
         alert("Veuillez sélectionner une image.");
     }
 });
+displayPlayers();
+
+
+
+
+
+
+   
+
+
+
+
