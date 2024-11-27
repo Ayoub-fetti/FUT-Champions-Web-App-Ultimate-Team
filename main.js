@@ -1,3 +1,62 @@
+const clubLogos = {
+    'real-madrid': 'https://media-4.api-sports.io/football/teams/541.png',
+    'barcelona': 'https://media-4.api-sports.io/football/teams/529.png',
+    'atletico-madrid': 'https://media-4.api-sports.io/football/teams/530.png',
+    'sevilla': 'https://media-4.api-sports.io/football/teams/536.png',
+    'manchester-united': 'https://media-4.api-sports.io/football/teams/33.png',
+    'liverpool': 'https://media-4.api-sports.io/football/teams/40.png',
+    'chelsea': 'https://media-4.api-sports.io/football/teams/49.png',
+    'manchester-city': 'https://media-4.api-sports.io/football/teams/50.png',
+    'arsenal': 'https://media-4.api-sports.io/football/teams/42.png',
+    'tottenham-hotspur': 'https://media-4.api-sports.io/football/teams/47.png',
+    'leeds-united': 'https://media-4.api-sports.io/football/teams/63.png',
+    'newcastle-united': 'https://media-4.api-sports.io/football/teams/34.png',
+    'bayern-munich': 'https://media-4.api-sports.io/football/teams/157.png',
+    'borussia-dortmund': 'https://media-4.api-sports.io/football/teams/165.png',
+    'juventus': 'https://media-4.api-sports.io/football/teams/496.png',
+    'ac-milan': 'https://media-4.api-sports.io/football/teams/489.png',
+    'inter-milan': 'https://media-4.api-sports.io/football/teams/505.png',
+    'napoli': 'https://media-4.api-sports.io/football/teams/492.png',
+    'roma': 'https://media-4.api-sports.io/football/teams/497.png',
+    'paris-saint-germain': 'https://media-4.api-sports.io/football/teams/85.png',
+    'ajax': 'https://media-4.api-sports.io/football/teams/194.png',
+    'galatasaray': 'https://media-4.api-sports.io/football/teams/645.png',
+    'fenerbahce': 'https://media-4.api-sports.io/football/teams/611.png',
+    'celtic': 'https://media-4.api-sports.io/football/teams/247.png',
+    'rangers': 'https://media-4.api-sports.io/football/teams/248.png',
+    'flamengo': 'https://media-4.api-sports.io/football/teams/127.png',
+    'river-plate': 'https://media-4.api-sports.io/football/teams/435.png',
+    'boca-juniors': 'https://media-4.api-sports.io/football/teams/451.png',
+    'al-ahly': 'https://media-4.api-sports.io/football/teams/1039.png',
+    'zamalek': 'https://media-4.api-sports.io/football/teams/1040.png'
+};
+
+const countryFlags = {
+    'argentina': 'https://media-4.api-sports.io/flags/ar.svg',
+    'belgium': 'https://media-4.api-sports.io/flags/be.svg',
+    'brazil': 'https://media-4.api-sports.io/flags/br.svg',
+    'canada': 'https://media-4.api-sports.io/flags/ca.svg',
+    'croatia': 'https://media-4.api-sports.io/flags/hr.svg',
+    'danemark': 'https://media-4.api-sports.io/flags/dk.svg',
+    'egypt': 'https://media-4.api-sports.io/flags/eg.svg',
+    'england': 'https://media-4.api-sports.io/flags/gb.svg',
+    'france': 'https://media-4.api-sports.io/flags/fr.svg',
+    'germany': 'https://media-4.api-sports.io/flags/de.svg',
+    'italy': 'https://media-4.api-sports.io/flags/it.svg',
+    'mexique': 'https://media-4.api-sports.io/flags/mx.svg',
+    'morocco': 'https://media-4.api-sports.io/flags/ma.svg',
+    'netherlands': 'https://media-4.api-sports.io/flags/nl.svg',
+    'norway': 'https://media-4.api-sports.io/flags/no.svg',
+    'portugal': 'https://media-4.api-sports.io/flags/pt.svg',
+    'slovenia': 'https://media-4.api-sports.io/flags/si.svg',
+    'spain': 'https://media-4.api-sports.io/flags/es.svg',
+    'uruguay': 'https://media-4.api-sports.io/flags/uy.svg',
+    'usa': 'https://media-4.api-sports.io/flags/us.svg'
+};
+
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
    
     const formationSelect = document.getElementById('formation');
@@ -87,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ************************************************************************************
 function displayPlayers() {
     const banqueSection = document.querySelector('.banque');
-    banqueSection.innerHTML = '<h1 class="reserve_text">Réserve de joueurs :</h1>'; 
+    banqueSection.innerHTML = ''; 
 
     const joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
 
@@ -103,8 +162,9 @@ function displayPlayers() {
                         <div class="card-top">
                             <span class="rating">${joueur.note}</span>
                             <span class="position">${joueur.position}</span>
-                            <img src="img/flag/${joueur.nationalite}.png" alt="${joueur.nationalite}" class="nation-flag">
-                            <img src="img/clubs/${joueur.club}.png" alt="${joueur.club}" class="club-logo">
+                            <img src="${countryFlags[joueur.nationalite]}" alt="${joueur.nationalite}" class="nation-flag">
+                            <img src="${clubLogos[joueur.club]}" alt="${joueur.club}" class="club-logo">
+
                         </div>
                         
                         <div class="player-image-container">
@@ -204,8 +264,9 @@ function editPlayer(index) {
 
 
 
-// stocker tout les donnes du form dans local storage (localStorage)
-// *****************************************************************
+// stocker tout les donnes du form dans localStorage
+// *************************************************
+
 document.querySelector('.btn_add').addEventListener('click', function(event) {
     event.preventDefault(); // empeche le rechargement de la page
 
@@ -227,8 +288,33 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
     const note = document.querySelector('.note').value;
     const imageInput = document.querySelector('.ajout_img');
 
-    // check si  image est  selectionnee
-    if (imageInput.files && imageInput.files[0]) {
+    // Verification que les champs sont remplis
+    if (!joueurNom || !position || !nationalite || !club || 
+        !PAC || !SHO || !PAS || !DRI || !DEF || !PHY || !note) {
+        alert("Veuillez remplir tous les champs du formulaire");
+        return;
+    }
+     // Verification des valeurs numeriques 0-99
+     const stats = [PAC, SHO, PAS, DRI, DEF, PHY];
+     for (let stat of stats) {
+         if (isNaN(stat) || stat < 0 || stat > 99) {
+             alert("Les statistiques doivent être comprises entre 0 et 99");
+             return;
+         }
+     }
+         // Verification de la note generale 0-99
+    if (isNaN(note) || note < 0 || note > 100) {
+        alert("La note générale doit être comprise entre 0 et 100");
+        return;
+    }
+        // verification de l'image wach ajoute
+        if (!imageInput.files || !imageInput.files[0]) {
+            alert("Veuillez sélectionner une image");
+            return;
+        }
+    
+
+    // Si toutes les validations OK , continuer avec le code existant
         const file = imageInput.files[0];
         const reader = new FileReader();
 
@@ -254,7 +340,7 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
             let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
 
             if (index !== null && !isNaN(index)) {
-                // Mis aa jour le joueur existant
+                // Mis a jour le joueur existant
                 joueurs[index] = joueur;
                 document.querySelector('.btn_add').removeAttribute('data-index'); 
             } else {
@@ -273,9 +359,7 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
         };
 
         reader.readAsDataURL(file);
-    } else {
-        alert("Veuillez sélectionner une image.");
-    }
+
 });
 displayPlayers();
 

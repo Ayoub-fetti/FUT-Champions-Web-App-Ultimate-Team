@@ -3,7 +3,7 @@
 body{
     font-family: "Bebas Neue", sans-serif;
     width: 100%;
-    height: 1200px;
+    height: auto;
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(img/home.webp);
     background-repeat: no-repeat;
     opacity: 1;
@@ -179,35 +179,36 @@ nav{
 }
 
 .banque{
-    height: 300px;
-    width: 55%;
+    min-height: 300px;
+    width: 58%;
     background-color: #1a1a1a;
     margin-left: 20px;
     margin-top: 60px;
+    margin-bottom: 50px;
     filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 1));
-    display: grid;
     border-radius: 20px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    overflow: visible;
+    height: auto;
+
 }
 .reserve_text{
     color: whitesmoke;
     height: 35px;
-    width: 170px;
+    width: 400px;
     margin-left: 20px;
+    margin-top: 50PX;
+
 }
 
-.banque {
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-}
 
 .joueur-card {
-    position: absolute;
     width: 200px;
     height: 300px; /* Hauteur fixe ajoutée */
     margin: 10px;
-    top: 50px;
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 1));
 }
 
 .card-container {
@@ -247,7 +248,7 @@ nav{
 .rating {
     font-size: 22px;
     font-weight: bold;
-    color: black;
+    color: #3A3319;
     position: absolute;
     top: 60px;
     left: 24px;
@@ -255,7 +256,7 @@ nav{
 
 .position {
     font-size: 16px;
-    color: black;
+    color: #3A3319;
     position: absolute;
     top: 85px;
     left: 28px;
@@ -296,7 +297,7 @@ nav{
 .player-name {
     font-size: 16px;
     font-weight: bold;
-    color: black;
+    color: #3A3319;
     text-align: center;
     width: 90%;
     position: absolute;
@@ -324,7 +325,7 @@ nav{
 .stat {
     display: flex;
     gap: 10px;
-    color: black;
+    color: #3A3319;
     font-size: 14px; /* Réduit de 14px à 12px */
     align-items: center; /* Ajouté */
     margin-right: 10px;
