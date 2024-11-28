@@ -371,16 +371,16 @@ displayPlayers();
 // quand une carte vide est cliquer 
 // *******************************
 
+
 document.addEventListener('DOMContentLoaded', function () {
+    // stockerPlayers();
+
     const emptyCards = document.querySelectorAll('.empty-card');
     const modal = document.getElementById('joueur_modal');
     const closeBtn = modal.querySelector('.close');
     const playerCards = document.getElementById('playerCards');
-    const bankCards = Array.from(document.querySelector('.banque').children);
     let selectedEmptyCard = null;
 
-
-    // Function pour ouvrir le modal et charger les joueurs de la banque
     function openModal(emptyCard) {
         selectedEmptyCard = emptyCard;
         const position = emptyCard.dataset.position;
@@ -388,17 +388,14 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.style.display = 'block';
     }
 
-    // Function pour fermer le modal
     function closeModal() {
         modal.style.display = 'none';
         selectedEmptyCard = null;
     }
 
-    // Function pour charger les cartes des joueurs dans le modal
     function loadPlayerCards(position) {
-        playerCards.innerHTML = ''; // Efface le contenu precedent
-        const filteredPlayers = bankCards.filter(card => card.dataset.position === position);
-
+        playerCards.innerHTML = '';
+        const filteredPlayers = Array.from(document.querySelectorAll('.banque .joueur-card')).filter(card => card.dataset.position === position);
         filteredPlayers.forEach(card => {
             const cardClone = card.cloneNode(true);
             cardClone.addEventListener('click', () => selectPlayer(cardClone));
@@ -406,55 +403,126 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-     // remplacer la carte vide par la carte du joueur que je veux
 
-     function selectPlayer(cardClone) {
+  
+   
+    function selectPlayer(cardClone) {
         if (selectedEmptyCard) {
-            // Cloner la carte du joueur sélectionne
             const playerCardClone = cardClone.cloneNode(true);
+            const position = selectedEmptyCard.dataset.position;
             
-            // Récupérer les styles de la carte vide
-            const emptyCardStyles = getComputedStyle(selectedEmptyCard);
-            
-            // Appliquer les styles de la carte vide e la nouvelle carte du joueur
-            playerCardClone.style.position = 'absolute'; // Assurez-vous que la position est absolue
-            playerCardClone.style.bottom = emptyCardStyles.bottom;
-            playerCardClone.style.left = emptyCardStyles.left;
-    
-            // Remplacer la carte vide par la carte du joueur
-            selectedEmptyCard.parentNode.replaceChild(playerCardClone, selectedEmptyCard);
-            
-            // Sauvegarder l'etat dans le localStorage
-            const playerData = {
-                position: playerCardClone.dataset.position,
-                image: playerCardClone.querySelector('.player-image').src, // Assurez-vous que vous avez cette image dans la carte
-
+            // Définir les positions spécifiques pour chaque emplacement
+            const positions = {
+                'Gk': { bottom: '-75%', left: '52%' },
+                'LB': { bottom: '-35%', left: '20%' },
+                'CB1': { bottom: '-42%', left: '40%' },
+                'CB2': { bottom: '-42%', left: '60%' },
+                'RB': { bottom: '-35%', left: '80%' },
+                // Positions pour 4-3-3
+                'CM1': { bottom: '0%', left: '80%' },
+                'CM2': { bottom: '-10%', left: '51%' },
+                'CM3': { bottom: '0%', left: '25%' },
+                // Positions pour 4-4-2
+                'CM4': { bottom: '45%', left: '80%' },
+                // Attaquants 4-4-2
+                'ST1': { bottom: '65%', left: '40%' },
+                'ST2': { bottom: '65%', left: '60%' },
+                // Attaquants 4-3-3
+                'LW': { bottom: '65%', left: '30%' },
+                'ST': { bottom: '65%', left: '50%' },
+                'RW': { bottom: '65%', left: '70%' }
             };
-            
+    
+    
+            // Déterminer quelle position CB ou CM utiliser en fonction des cartes déjà placées
+            if (position === 'CB') {
+                const existingCBs = document.querySelectorAll('.joueur-card[data-original-position="CB"]');
+                const positionKey = existingCBs.length === 0 ? 'CB1' : 'CB2';
+                playerCardClone.dataset.originalPosition = 'CB';
+                Object.assign(playerCardClone.style, {
+                    position: 'absolute',
+                    bottom: positions[positionKey].bottom,
+                    left: positions[positionKey].left,
+                    transform: 'translate(-50%, -50%)'
+                });
+            } else if (position === 'CM') {
+                const existingCMs = document.querySelectorAll('.joueur-card[data-original-position="CM"]');
+                const formation = document.getElementById('formation').value;
+                const positionKey = `CM${existingCMs.length + 1}`;
+                
+                if ((formation === '1-4-4-2' && existingCMs.length < 4) || 
+                    (formation === '1-4-3-3' && existingCMs.length < 3)) {
+                    playerCardClone.dataset.originalPosition = 'CM';
+                    Object.assign(playerCardClone.style, {
+                        position: 'absolute',
+                        bottom: positions[positionKey].bottom,
+                        left: positions[positionKey].left,
+                        transform: 'translate(-50%, -50%)'
+                    });
+                }
+            } else if (positions[position]) {
+                // Pour les autres positions
+                Object.assign(playerCardClone.style, {
+                    position: 'absolute',
+                    bottom: positions[position].bottom,
+                    left: positions[position].left,
+                    transform: 'translate(-50%, -50%)'
+                });
+            }
+    
+            const playerData = {
+                position: position,
+                content: playerCardClone.innerHTML,
+                styles: {
+                    position: playerCardClone.style.position,
+                    bottom: playerCardClone.style.bottom,
+                    left: playerCardClone.style.left,
+                    transform: playerCardClone.style.transform
+                },
+                originalPosition: playerCardClone.dataset.originalPosition
+            };
+    
             let savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
             savedPlayers.push(playerData);
             localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
     
-            // Fermer le modal après la sélection
+            selectedEmptyCard.parentNode.replaceChild(playerCardClone, selectedEmptyCard);
             closeModal();
         }
     }
+    
+    function stockerPlayers() {
+        const savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+        savedPlayers.forEach(player => {
+            const emptyCard = document.querySelector(`.empty-card[data-position="${player.position}"]`);
+            if (emptyCard) {
+                const playerCard = document.createElement('div');
+                playerCard.className = 'joueur-card';
+                playerCard.innerHTML = player.content;
+    
+                // Appliquer les styles sauvegardés
+                if (player.styles) {
+                    Object.assign(playerCard.style, player.styles);
+                }
+    
+                emptyCard.parentNode.replaceChild(playerCard, emptyCard);
+            }
+        });
+    }
+  
+  
 
-    // Ajout des evenements aux cartes vides
     emptyCards.forEach(card => {
         card.addEventListener('click', () => openModal(card));
     });
 
-    // Fermer le modal avec le bouton de fermeture
     closeBtn.addEventListener('click', closeModal);
-
-    // Fermer le modal en cliquant en dehor le modal
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
             closeModal();
         }
-
     });
 });
+
 
 
