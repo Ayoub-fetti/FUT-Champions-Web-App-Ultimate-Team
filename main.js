@@ -9,7 +9,7 @@ const clubLogos = {
     'manchester-city': 'https://media-4.api-sports.io/football/teams/50.png',
     'arsenal': 'https://media-4.api-sports.io/football/teams/42.png',
     'tottenham-hotspur': 'https://media-4.api-sports.io/football/teams/47.png',
-    'leeds-united': 'https://media-4.api-sports.io/football/teams/63.png',
+    'inter_miami': 'https://seeklogo.com/images/I/inter-miami-cf-logo-70CC7D9F44-seeklogo.com.png',
     'newcastle-united': 'https://media-4.api-sports.io/football/teams/34.png',
     'bayern-munich': 'https://media-4.api-sports.io/football/teams/157.png',
     'borussia-dortmund': 'https://media-4.api-sports.io/football/teams/165.png',
@@ -56,6 +56,8 @@ const countryFlags = {
 
 
 
+// position des joueurs en fonction de la formation
+// *************************************************
 
 document.addEventListener('DOMContentLoaded', function() {
    
@@ -67,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const goalkeeper = document.querySelector('.goalkeeper');
 
         // positin du GK
-        goalkeeper.style.cssText = 'bottom: -30%; left: 50%;';
+        goalkeeper.style.cssText = 'bottom: -45%; left: 49.5%;';
 
         // CB (meme position)
         const def1 = document.querySelector('.def1');
@@ -76,10 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const def4 = document.querySelector('.def4');
 
         // Position des CB
-        def1.style.cssText = 'bottom: -2%; left: 20%;';  // BL
-        def2.style.cssText = 'bottom: -5%; left: 40%;';  // CB
-        def3.style.cssText = 'bottom: -5%; left: 60%;';  // CB
-        def4.style.cssText = 'bottom: -2%; left: 80%;';  // BR
+        def1.style.cssText = 'bottom: -8%; left: 20%;';  // BL
+        def2.style.cssText = 'bottom: -15%; left: 40%;';  // CB
+        def3.style.cssText = 'bottom: -15%; left: 60%;';  // CB
+        def4.style.cssText = 'bottom: -8%; left: 80%;';  // BR
 
         // CM et ST 
         const mid1 = document.querySelector('.mid1');
@@ -103,8 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
             mid4.style.display = 'block';
             
             // ST
-            fw1.style.cssText = 'bottom: 60%; left: 35%;';
-            fw2.style.cssText = 'bottom: 60%; left: 65%;';
+            fw1.style.cssText = 'bottom: 65%; left: 35%;';
+            fw2.style.cssText = 'bottom: 65%; left: 65%;';
             fw3.style.display = 'none';  // Cacher le 3 ST
 
         } else if (formation === '1-4-3-3') {
@@ -114,14 +116,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // CM
             mid1.style.cssText = 'bottom: 25%; left: 30%;';
-            mid2.style.cssText = 'bottom: 20%; left: 50%;';
+            mid2.style.cssText = 'bottom: 20%; left: 49.2%;';
             mid3.style.cssText = 'bottom: 25%; left: 70%;';
             mid4.style.display = 'none';  // Cacher le 4 CM
             
             // ST
-            fw1.style.cssText = 'bottom: 55%; left: 25%;';
-            fw2.style.cssText = 'bottom: 60%; left: 50%;';
-            fw3.style.cssText = 'bottom: 55%; left: 75%;';
+            fw1.style.cssText = 'bottom: 60%; left: 25%;';
+            fw2.style.cssText = 'bottom: 65%; left: 50%;';
+            fw3.style.cssText = 'bottom: 60%; left: 75%;';
             fw3.style.display = 'block';  // Montrer le 3 ST
         }
     }
@@ -141,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
         
 // fonction pour afficher les cartes de joueur apres la creation du form (f.principale)
 // ************************************************************************************
@@ -153,6 +156,8 @@ function displayPlayers() {
     joueurs.forEach((joueur, index) => {
         const joueurCard = document.createElement('div');
         joueurCard.classList.add('joueur-card');
+        joueurCard.dataset.position = joueur.position;
+
 
         joueurCard.innerHTML = `
             <div class="card-container">
@@ -261,9 +266,6 @@ function editPlayer(index) {
 
 
 
-
-
-
 // stocker tout les donnes du form dans localStorage
 // *************************************************
 
@@ -294,15 +296,15 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
         alert("Veuillez remplir tous les champs du formulaire");
         return;
     }
-     // Verification des valeurs numeriques 0-99
+     // Verification des valeurs numeriques 0-100
      const stats = [PAC, SHO, PAS, DRI, DEF, PHY];
      for (let stat of stats) {
-         if (isNaN(stat) || stat < 0 || stat > 99) {
+         if (isNaN(stat) || stat < 0 || stat > 100) {
              alert("Les statistiques doivent être comprises entre 0 et 99");
              return;
          }
      }
-         // Verification de la note generale 0-99
+         // Verification de la note generale 0-100
     if (isNaN(note) || note < 0 || note > 100) {
         alert("La note générale doit être comprise entre 0 et 100");
         return;
@@ -366,10 +368,93 @@ displayPlayers();
 
 
 
+// quand une carte vide est cliquer 
+// *******************************
+
+document.addEventListener('DOMContentLoaded', function () {
+    const emptyCards = document.querySelectorAll('.empty-card');
+    const modal = document.getElementById('joueur_modal');
+    const closeBtn = modal.querySelector('.close');
+    const playerCards = document.getElementById('playerCards');
+    const bankCards = Array.from(document.querySelector('.banque').children);
+    let selectedEmptyCard = null;
 
 
-   
+    // Function pour ouvrir le modal et charger les joueurs de la banque
+    function openModal(emptyCard) {
+        selectedEmptyCard = emptyCard;
+        const position = emptyCard.dataset.position;
+        loadPlayerCards(position);
+        modal.style.display = 'block';
+    }
 
+    // Function pour fermer le modal
+    function closeModal() {
+        modal.style.display = 'none';
+        selectedEmptyCard = null;
+    }
 
+    // Function pour charger les cartes des joueurs dans le modal
+    function loadPlayerCards(position) {
+        playerCards.innerHTML = ''; // Efface le contenu precedent
+        const filteredPlayers = bankCards.filter(card => card.dataset.position === position);
+
+        filteredPlayers.forEach(card => {
+            const cardClone = card.cloneNode(true);
+            cardClone.addEventListener('click', () => selectPlayer(cardClone));
+            playerCards.appendChild(cardClone);
+        });
+    }
+
+     // remplacer la carte vide par la carte du joueur que je veux
+
+     function selectPlayer(cardClone) {
+        if (selectedEmptyCard) {
+            // Cloner la carte du joueur sélectionne
+            const playerCardClone = cardClone.cloneNode(true);
+            
+            // Récupérer les styles de la carte vide
+            const emptyCardStyles = getComputedStyle(selectedEmptyCard);
+            
+            // Appliquer les styles de la carte vide e la nouvelle carte du joueur
+            playerCardClone.style.position = 'absolute'; // Assurez-vous que la position est absolue
+            playerCardClone.style.bottom = emptyCardStyles.bottom;
+            playerCardClone.style.left = emptyCardStyles.left;
+    
+            // Remplacer la carte vide par la carte du joueur
+            selectedEmptyCard.parentNode.replaceChild(playerCardClone, selectedEmptyCard);
+            
+            // Sauvegarder l'etat dans le localStorage
+            const playerData = {
+                position: playerCardClone.dataset.position,
+                image: playerCardClone.querySelector('.player-image').src, // Assurez-vous que vous avez cette image dans la carte
+
+            };
+            
+            let savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+            savedPlayers.push(playerData);
+            localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
+    
+            // Fermer le modal après la sélection
+            closeModal();
+        }
+    }
+
+    // Ajout des evenements aux cartes vides
+    emptyCards.forEach(card => {
+        card.addEventListener('click', () => openModal(card));
+    });
+
+    // Fermer le modal avec le bouton de fermeture
+    closeBtn.addEventListener('click', closeModal);
+
+    // Fermer le modal en cliquant en dehor le modal
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+
+    });
+});
 
 

@@ -110,7 +110,7 @@ nav{
 
 .player {
     position: absolute;
-    width: 300px; 
+    width: 150px; 
     height: auto;
     transform: translate(-50%, -50%);
     transition: all 0.5s ease-in-out;
@@ -208,6 +208,7 @@ nav{
     width: 200px;
     height: 300px; /* Hauteur fixe ajoutée */
     margin: 10px;
+    cursor: pointer;
     filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 1));
 }
 
@@ -218,8 +219,8 @@ nav{
 }
 
 .card-bg {
-    width: 100%;
-    height: 100%; /* Changé de auto à 100% */
+    width: 150px;
+    height: auto; /* Changé de auto à 100% */
     object-fit: cover; /* Ajouté pour couvrir tout l'espace */
 }
 
@@ -250,7 +251,7 @@ nav{
     font-weight: bold;
     color: #3A3319;
     position: absolute;
-    top: 60px;
+    top: 40px;
     left: 24px;
 }
 
@@ -258,7 +259,7 @@ nav{
     font-size: 16px;
     color: #3A3319;
     position: absolute;
-    top: 85px;
+    top: 60px;
     left: 28px;
 }
 
@@ -267,7 +268,7 @@ nav{
     height: 20px;
     object-fit: contain;
     position: absolute;
-    top: 110px;
+    top: 77px;
     left: 25px;
 }
 .club-logo{
@@ -275,7 +276,7 @@ nav{
     height: 20px;
     object-fit: contain;
     position: absolute;
-    top: 135px;
+    top: 100px;
     left: 25px;
 }
 
@@ -289,9 +290,11 @@ nav{
 }
 
 .player-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    max-width: 70px;
+    max-height: auto;
+    position: absolute;
+    top: 30px;
+    left: 50px;
 }
 
 .player-name {
@@ -301,34 +304,35 @@ nav{
     text-align: center;
     width: 90%;
     position: absolute;
-    top: 180px; 
+    top: 120px;
+    left: -13px; 
 }
 
 .stats-container {
     display: flex;
     justify-content: space-between;
-    width: 85%;
-    margin-top: 5px;
-    padding: 0 10px; /* Ajouté */
+    width: 10px;
+    position: absolute;
+    top: 140px;
+    left:30px ;
 }
 
 .stats-left{
     display: flex;
     flex-direction: column;
-
+    width: 50px;
 }
 .stats-right{
     display: flex;
     flex-direction: column;
+    width: 50px;
 }
 
 .stat {
     display: flex;
     gap: 10px;
     color: #3A3319;
-    font-size: 14px; /* Réduit de 14px à 12px */
-    align-items: center; /* Ajouté */
-    margin-right: 10px;
+    font-size: 11px;
 }
 
 .stat span {
@@ -344,16 +348,61 @@ nav{
     border: none;
     border-radius: 50%;
     position: absolute;
-    right:-13px;
-    top:60px;
+    left:110px;
+    top:-100px;
     cursor: pointer;
 }
 .btn_edit{
     background-color: transparent;
     border: none;
     position: absolute;
-    right: -15px;
-    top: 90px;
+    left: 110px;
+    top: -70px;
     cursor: pointer;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: rgb(213, 206, 206);
+    margin: 15% auto;
+    padding: 10px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+#playerCards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+.modal_text{
+    color: #3A3319;
+
 }
 

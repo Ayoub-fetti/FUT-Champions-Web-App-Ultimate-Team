@@ -22,24 +22,24 @@
             <img src="img/terrain-fiddle.webp" alt="terrain" class="terrain_img">
             <div class="players">
                 <!-- GK  -->
-                <img src="img/card_empty.webp" alt="player" class="player goalkeeper">
+                <img src="img/card_empty.webp" alt="player" class="player goalkeeper empty-card" data-position="Gk">
                 
                 <!-- CB  -->
-                <img src="img/card_empty.webp" alt="player" class="player defender def1">
-                <img src="img/card_empty.webp" alt="player" class="player defender def2">
-                <img src="img/card_empty.webp" alt="player" class="player defender def3">
-                <img src="img/card_empty.webp" alt="player" class="player defender def4">
+                <img src="img/card_empty.webp" alt="player" class="player defender def1 empty-card" data-position="LB">
+                <img src="img/card_empty.webp" alt="player" class="player defender def2 empty-card" data-position="CB">
+                <img src="img/card_empty.webp" alt="player" class="player defender def3 empty-card" data-position="CB">
+                <img src="img/card_empty.webp" alt="player" class="player defender def4 empty-card" data-position="RB">
                 
                 <!-- CM  -->
-                <img src="img/card_empty.webp" alt="player" class="player midfielder mid1">
-                <img src="img/card_empty.webp" alt="player" class="player midfielder mid2">
-                <img src="img/card_empty.webp" alt="player" class="player midfielder mid3">
-                <img src="img/card_empty.webp" alt="player" class="player midfielder mid4">
+                <img src="img/card_empty.webp" alt="player" class="player midfielder mid1 empty-card" data-position="CM">
+                <img src="img/card_empty.webp" alt="player" class="player midfielder mid2 empty-card" data-position="CM">
+                <img src="img/card_empty.webp" alt="player" class="player midfielder mid3 empty-card" data-position="CM">
+                <img src="img/card_empty.webp" alt="player" class="player midfielder mid4 empty-card" data-position="CM">
                 
                 <!-- ST  -->
-                <img src="img/card_empty.webp" alt="player" class="player forward st1">
-                <img src="img/card_empty.webp" alt="player" class="player forward st2">
-                <img src="img/card_empty.webp" alt="player" class="player forward st3">
+                <img src="img/card_empty.webp" alt="player" class="player forward st1 empty-card" data-position="LW">
+                <img src="img/card_empty.webp" alt="player" class="player forward st2 empty-card" data-position="ST">
+                <img src="img/card_empty.webp" alt="player" class="player forward st3 empty-card" data-position="LR">
             </div>
         </div>
         
@@ -103,7 +103,7 @@
                     <option value="manchester-city">Manchester City</option>
                     <option value="arsenal">Arsenal</option>
                     <option value="tottenham-hotspur">Tottenham Hotspur</option>
-                    <option value="leeds-united">Leeds United</option>
+                    <option value="inter_miami">Inter Miami</option>
                     <option value="newcastle-united">Newcastle United</option>
                     <option value="bayern-munich">Bayern Munich</option>
                     <option value="borussia-dortmund">Borussia Dortmund</option>
@@ -156,27 +156,13 @@
 
     </section> 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <div id="joueur_modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal_text">Sélectionnez un joueur</h2>
+            <div id="playerCards"></div>
+        </div>
+    </div>
 
 
 
