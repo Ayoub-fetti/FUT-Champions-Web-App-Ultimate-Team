@@ -373,7 +373,7 @@ displayPlayers();
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // stockerPlayers();
+    stockerPlayers();
 
     const emptyCards = document.querySelectorAll('.empty-card');
     const modal = document.getElementById('joueur_modal');
@@ -428,9 +428,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 'ST1': { bottom: '65%', left: '40%' },
                 'ST2': { bottom: '65%', left: '60%' },
                 // Attaquants 4-3-3
-                'LW': { bottom: '65%', left: '30%' },
-                'ST': { bottom: '65%', left: '50%' },
-                'RW': { bottom: '65%', left: '70%' }
+                'LW': { bottom: '35%', left: '30%' },
+                'ST': { bottom: '38%', left: '50%' },
+                'LR': { bottom: '35%', left: '70%' }
             };
     
     
@@ -460,7 +460,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         transform: 'translate(-50%, -50%)'
                     });
                 }
-            } else if (positions[position]) {
+            } 
+            else if (position === 'LR') {  // Ajout de la condition spécifique pour RW
+                playerCardClone.dataset.originalPosition = 'LR';
+                Object.assign(playerCardClone.style, {
+                    position: 'absolute',
+                    bottom: positions['LR'].bottom,
+                    left: positions['LR'].left,
+                    transform: 'translate(-50%, -50%)'
+                });
+            }
+            else if (positions[position]) {
                 // Pour les autres positions
                 Object.assign(playerCardClone.style, {
                     position: 'absolute',
