@@ -55,7 +55,7 @@ const countryFlags = {
 };
 
 
-// founction pour modifier le jouuer 
+// founction pour modifier le joueur 
 function playerCardNouveaux(joueur) {
     return `
         <div class="card-container">
@@ -483,7 +483,7 @@ montrerJoueur();
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    stockerJoueur();
+    // stockerJoueur(); 
 
     const emptyCards = document.querySelectorAll('.empty-card');
     const modal = document.getElementById('joueur_modal');
@@ -512,9 +512,6 @@ document.addEventListener('DOMContentLoaded', function () {
             playerCards.appendChild(cardClone);
         });
     }
-
-
-  
    
     function selectionnerJoueur(cardClone) {
         if (selectedEmptyCard) {
@@ -537,20 +534,27 @@ document.addEventListener('DOMContentLoaded', function () {
             const positions = {
                 'Gk': { bottom: '-75%', left: '52%' },
                 'LB': { bottom: '-35%', left: '20%' },
-                'CB': { bottom: '-42%', left: '40%' },
+                'CB': { bottom: '-42%', left: '40%' }, // Premier CB
+                'CB2': { bottom: '-42%', left: '60%' }, // Deuxième CB (ajouté)
                 'RB': { bottom: '-35%', left: '80%' },
-                'CM': { bottom: '0%', left: '80%' },
-                'LW': { bottom: '35%', left: '30%' },
-                'ST': { bottom: '38%', left: '50%' },
-                'LR': { bottom: '35%', left: '70%' }
+                'CM': { bottom: '25%', left: '30%' },
+                'LW': { bottom: '60%', left: '25%' },
+                'ST': { bottom: '65%', left: '50%' },
+                'LR': { bottom: '60%', left: '75%' }
             };
 
+            // Ajuster la position pour le deuxième CB
+            let positionKey = originalPosition;
+            if (originalPosition === 'CB' && selectedEmptyCard.classList.contains('def3')) {
+                positionKey = 'CB2';
+            }
+
             // Appliquer les styles de position
-            if (positions[originalPosition]) {
+            if (positions[positionKey]) {
                 Object.assign(playerCardClone.style, {
                     position: 'absolute',
-                    bottom: positions[originalPosition].bottom,
-                    left: positions[originalPosition].left,
+                    bottom: positions[positionKey].bottom,
+                    left: positions[positionKey].left,
                     transform: 'translate(-50%, -50%)'
                 });
             }
@@ -595,8 +599,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
   
-  
-
     emptyCards.forEach(card => {
         card.addEventListener('click', () => openModal(card));
     });
