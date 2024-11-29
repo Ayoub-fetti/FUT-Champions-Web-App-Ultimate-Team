@@ -54,7 +54,9 @@ const countryFlags = {
     'usa': 'https://media-4.api-sports.io/flags/us.svg'
 };
 
-function updatePlayerCard(joueur) {
+
+// founction pour modifier le jouuer 
+function playerCardNouveaux(joueur) {
     return `
         <div class="card-container">
             <div class="card-background">
@@ -259,10 +261,62 @@ function displayPlayers() {
 // *********************************
 
 function deletePlayer(index) {
+    // Supprimer de la banque (localStorage 'joueurs')
     let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
-    joueurs.splice(index, 1); // Supprime le joueur à l'index spécifié
-    localStorage.setItem('joueurs', JSON.stringify(joueurs)); // Met à jour le localStorage
-    displayPlayers(); // Réaffiche la liste des joueurs
+    joueurs.splice(index, 1);
+    localStorage.setItem('joueurs', JSON.stringify(joueurs));
+
+    // Supprimer du terrain (localStorage 'savedPlayers')
+    let savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+    const playerOnPitchIndex = savedPlayers.findIndex(player => player.playerIndex === parseInt(index));
+    
+    if (playerOnPitchIndex !== -1) {
+        // Récupérer la position originale du joueur
+        const position = savedPlayers[playerOnPitchIndex].position;
+        
+        // Positions originales pour chaque type de joueur
+        const originalPositions = {
+            'Gk': { bottom: '-45%', left: '49.5%' },
+            'LB': { bottom: '-8%', left: '20%' },
+            'CB': { bottom: '-15%', left: '40%' },
+            'RB': { bottom: '-8%', left: '80%' },
+            'CM': { bottom: '25%', left: '30%' },
+            'LW': { bottom: '60%', left: '25%' },
+            'ST': { bottom: '65%', left: '50%' },
+            'LR': { bottom: '60%', left: '75%' }
+        };
+
+        // Supprimer le joueur des savedPlayers
+        savedPlayers.splice(playerOnPitchIndex, 1);
+        localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
+
+        // Créer et replacer une empty-card sur le terrain
+        const playerOnPitch = document.querySelector(`.players .joueur-card[data-index="${index}"]`);
+        if (playerOnPitch) {
+            const emptyCard = document.createElement('img');
+            emptyCard.src = 'img/card_empty.webp';
+            emptyCard.alt = 'player';
+            emptyCard.className = `player empty-card`;
+            emptyCard.dataset.position = position;
+
+            // Appliquer la position originale
+            if (originalPositions[position]) {
+                Object.assign(emptyCard.style, {
+                    position: 'absolute',
+                    ...originalPositions[position],
+                    transform: 'translate(-50%, -50%)'
+                });
+            }
+
+            // Ajouter l'écouteur d'événements pour la modal
+            emptyCard.addEventListener('click', () => openModal(emptyCard));
+
+            playerOnPitch.parentNode.replaceChild(emptyCard, playerOnPitch);
+        }
+    }
+
+    // Rafraîchir l'affichage de la banque
+    displayPlayers();
 }
 
 
@@ -387,7 +441,7 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
                     };
                     
                     // Update content
-                    playerOnPitch.innerHTML = updatePlayerCard(joueur);
+                    playerOnPitch.innerHTML = playerCardNouveaux(joueur);
                     
                     // Restore the original styles
                     Object.assign(playerOnPitch.style, originalStyles);
@@ -398,7 +452,7 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
                         if (savedPlayer.playerIndex === parseInt(index)) {
                             return {
                                 ...savedPlayer,
-                                content: updatePlayerCard(joueur)
+                                content: playerCardNouveaux(joueur)
                             };
                         }
                         return savedPlayer;
