@@ -468,77 +468,41 @@ document.addEventListener('DOMContentLoaded', function () {
             const playerIndex = cardClone.querySelector('.btn_delete').dataset.index;
             playerCardClone.dataset.index = playerIndex;
             
+            // Récupérer les joueurs du localStorage pour obtenir la position originale
+            const joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
+            const joueur = joueurs[playerIndex];
+            const originalPosition = joueur.position; // Position originale du joueur
+
+            // Vérifier si la position sélectionnée correspond à la position originale
+            if (originalPosition !== selectedEmptyCard.dataset.position) {
+                alert(`Ce joueur est un ${originalPosition}. Veuillez le placer à sa position d'origine.`);
+                return;
+            }
+            
             // Définir les positions spécifiques pour chaque emplacement
             const positions = {
                 'Gk': { bottom: '-75%', left: '52%' },
                 'LB': { bottom: '-35%', left: '20%' },
-                'CB1': { bottom: '-42%', left: '40%' },
-                'CB2': { bottom: '-42%', left: '60%' },
+                'CB': { bottom: '-42%', left: '40%' },
                 'RB': { bottom: '-35%', left: '80%' },
-                // Positions pour 4-3-3
-                'CM1': { bottom: '0%', left: '80%' },
-                'CM2': { bottom: '-10%', left: '51%' },
-                'CM3': { bottom: '0%', left: '25%' },
-                // Positions pour 4-4-2
-                'CM4': { bottom: '45%', left: '80%' },
-                // Attaquants 4-4-2
-                'ST1': { bottom: '65%', left: '40%' },
-                'ST2': { bottom: '65%', left: '60%' },
-                // Attaquants 4-3-3
+                'CM': { bottom: '0%', left: '80%' },
                 'LW': { bottom: '35%', left: '30%' },
                 'ST': { bottom: '38%', left: '50%' },
                 'LR': { bottom: '35%', left: '70%' }
             };
-    
-    
-            // Déterminer quelle position CB ou CM utiliser en fonction des cartes déjà placées
-            if (position === 'CB') {
-                const existingCBs = document.querySelectorAll('.joueur-card[data-original-position="CB"]');
-                const positionKey = existingCBs.length === 0 ? 'CB1' : 'CB2';
-                playerCardClone.dataset.originalPosition = 'CB';
+
+            // Appliquer les styles de position
+            if (positions[originalPosition]) {
                 Object.assign(playerCardClone.style, {
                     position: 'absolute',
-                    bottom: positions[positionKey].bottom,
-                    left: positions[positionKey].left,
-                    transform: 'translate(-50%, -50%)'
-                });
-            } else if (position === 'CM') {
-                const existingCMs = document.querySelectorAll('.joueur-card[data-original-position="CM"]');
-                const formation = document.getElementById('formation').value;
-                const positionKey = `CM${existingCMs.length + 1}`;
-                
-                if ((formation === '1-4-4-2' && existingCMs.length < 4) || 
-                    (formation === '1-4-3-3' && existingCMs.length < 3)) {
-                    playerCardClone.dataset.originalPosition = 'CM';
-                    Object.assign(playerCardClone.style, {
-                        position: 'absolute',
-                        bottom: positions[positionKey].bottom,
-                        left: positions[positionKey].left,
-                        transform: 'translate(-50%, -50%)'
-                    });
-                }
-            } 
-            else if (position === 'LR') {  // Ajout de la condition spécifique pour RW
-                playerCardClone.dataset.originalPosition = 'LR';
-                Object.assign(playerCardClone.style, {
-                    position: 'absolute',
-                    bottom: positions['LR'].bottom,
-                    left: positions['LR'].left,
+                    bottom: positions[originalPosition].bottom,
+                    left: positions[originalPosition].left,
                     transform: 'translate(-50%, -50%)'
                 });
             }
-            else if (positions[position]) {
-                // Pour les autres positions
-                Object.assign(playerCardClone.style, {
-                    position: 'absolute',
-                    bottom: positions[position].bottom,
-                    left: positions[position].left,
-                    transform: 'translate(-50%, -50%)'
-                });
-            }
-    
+
             const playerData = {
-                position: position,
+                position: originalPosition,
                 content: playerCardClone.innerHTML,
                 styles: {
                     position: playerCardClone.style.position,
@@ -546,14 +510,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     left: playerCardClone.style.left,
                     transform: playerCardClone.style.transform
                 },
-                originalPosition: playerCardClone.dataset.originalPosition,
                 playerIndex: parseInt(playerIndex)
             };
-    
+
             let savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
             savedPlayers.push(playerData);
             localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
-    
+
             selectedEmptyCard.parentNode.replaceChild(playerCardClone, selectedEmptyCard);
             closeModal();
         }
