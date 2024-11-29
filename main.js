@@ -55,7 +55,9 @@ const countryFlags = {
 };
 
 
-// founction pour modifier le joueur 
+// founction pour modifier le joueur du terrain en relation avec fonction du banque
+// ********************************************************************************
+
 function playerCardNouveaux(joueur) {
     return `
         <div class="card-container">
@@ -166,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updatePositions(this.value);
     });
 
-    // Initialisation avec la formation par défaut
+    // formation 1-4-3-3 par default
     updatePositions('1-4-3-3');
 });
 
@@ -320,8 +322,8 @@ function SupprimerJoueur(index) {
 }
 
 
-// Fonction pour modifier un joueur
-// ********************************
+// Fonction pour modifier un joueur du banque
+// ******************************************
 
 function modifierJoueur(index) {
     let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
@@ -483,7 +485,7 @@ montrerJoueur();
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // stockerJoueur(); 
+    stockerJoueur(); 
 
     const emptyCards = document.querySelectorAll('.empty-card');
     const modal = document.getElementById('joueur_modal');
@@ -503,6 +505,7 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedEmptyCard = null;
     }
 
+    // afficher les joueur dans le modal
     function loadPlayerCards(position) {
         playerCards.innerHTML = '';
         const filteredPlayers = Array.from(document.querySelectorAll('.banque .joueur-card')).filter(card => card.dataset.position === position);
@@ -512,11 +515,11 @@ document.addEventListener('DOMContentLoaded', function () {
             playerCards.appendChild(cardClone);
         });
     }
-   
+   // selectionner le joueur pour s'afficher dans le terrain
     function selectionnerJoueur(cardClone) {
         if (selectedEmptyCard) {
             const playerCardClone = cardClone.cloneNode(true);
-            const playerIndex = cardClone.querySelector('.btn_delete').dataset.index;
+            const playerIndex = cardClone.querySelector('.btn_edit').dataset.index;
             playerCardClone.dataset.index = playerIndex;
             
             const joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
@@ -587,7 +590,7 @@ document.addEventListener('DOMContentLoaded', function () {
             closeModal();
         }
     }
-    
+    // pour laisser le joueur dans le terrain apres l'actialisation
     function stockerJoueur() {
         const savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
         savedPlayers.forEach(player => {
@@ -618,5 +621,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-
