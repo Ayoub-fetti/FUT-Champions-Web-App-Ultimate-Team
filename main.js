@@ -54,7 +54,38 @@ const countryFlags = {
     'usa': 'https://media-4.api-sports.io/flags/us.svg'
 };
 
-
+function updatePlayerCard(joueur) {
+    return `
+        <div class="card-container">
+            <div class="card-background">
+                <img src="img/card_normal.webp" alt="card background" class="card-bg">
+                <div class="card-content">
+                    <div class="card-top">
+                        <span class="rating">${joueur.note}</span>
+                        <span class="position">${joueur.position}</span>
+                        <img src="${countryFlags[joueur.nationalite]}" alt="${joueur.nationalite}" class="nation-flag">
+                        <img src="${clubLogos[joueur.club]}" alt="${joueur.club}" class="club-logo">
+                    </div>
+                    <div class="player-image-container">
+                        <img src="${joueur.image}" alt="${joueur.joueurNom}" class="player-image">
+                    </div>
+                    <div class="player-name">${joueur.joueurNom}</div>
+                    <div class="stats-container">
+                        <div class="stats-left">
+                            <div class="stat"><span>${joueur.stats.PAC}</span> PAC</div>
+                            <div class="stat"><span>${joueur.stats.SHO}</span> SHO</div>
+                            <div class="stat"><span>${joueur.stats.PAS}</span> PAS</div>
+                        </div>
+                        <div class="stats-right">
+                            <div class="stat"><span>${joueur.stats.DRI}</span> DRI</div>
+                            <div class="stat"><span>${joueur.stats.DEF}</span> DEF</div>
+                            <div class="stat"><span>${joueur.stats.PHY}</span> PHY</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+}
 
 // position des joueurs en fonction de la formation
 // *************************************************
@@ -270,9 +301,8 @@ function editPlayer(index) {
 // *************************************************
 
 document.querySelector('.btn_add').addEventListener('click', function(event) {
-    event.preventDefault(); // empeche le rechargement de la page
+    event.preventDefault();
 
-    // REcupErer l'index du joueur Modifier, s'il existe
     const index = this.getAttribute('data-index');
 
     // Recuperer les valeurs du form
@@ -342,26 +372,52 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
             let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
 
             if (index !== null && !isNaN(index)) {
-                // Mis a jour le joueur existant
+                // Update existing player
                 joueurs[index] = joueur;
-                document.querySelector('.btn_add').removeAttribute('data-index'); 
+                
+                // Update player on the pitch if present
+                const playerOnPitch = document.querySelector(`.players .joueur-card[data-index="${index}"]`);
+                if (playerOnPitch) {
+                    // Save the original styles
+                    const originalStyles = {
+                        position: playerOnPitch.style.position,
+                        bottom: playerOnPitch.style.bottom,
+                        left: playerOnPitch.style.left,
+                        transform: playerOnPitch.style.transform
+                    };
+                    
+                    // Update content
+                    playerOnPitch.innerHTML = updatePlayerCard(joueur);
+                    
+                    // Restore the original styles
+                    Object.assign(playerOnPitch.style, originalStyles);
+                    
+                    // Update savedPlayers in localStorage while preserving position
+                    const savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+                    const updatedSavedPlayers = savedPlayers.map(savedPlayer => {
+                        if (savedPlayer.playerIndex === parseInt(index)) {
+                            return {
+                                ...savedPlayer,
+                                content: updatePlayerCard(joueur)
+                            };
+                        }
+                        return savedPlayer;
+                    });
+                    localStorage.setItem('savedPlayers', JSON.stringify(updatedSavedPlayers));
+                }
+                
+                document.querySelector('.btn_add').removeAttribute('data-index');
             } else {
-                // ajouter un nouveau joueur
+                // Add new player
                 joueurs.push(joueur);
             }
 
-
             localStorage.setItem('joueurs', JSON.stringify(joueurs));
-
-            // reinitialiser le formulaire
             document.forms[0].reset();
-            
-            // Afficher les joueurs immediatement
             displayPlayers();
         };
 
         reader.readAsDataURL(file);
-
 });
 displayPlayers();
 
@@ -409,7 +465,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function selectPlayer(cardClone) {
         if (selectedEmptyCard) {
             const playerCardClone = cardClone.cloneNode(true);
-            const position = selectedEmptyCard.dataset.position;
+            const playerIndex = cardClone.querySelector('.btn_delete').dataset.index;
+            playerCardClone.dataset.index = playerIndex;
             
             // Définir les positions spécifiques pour chaque emplacement
             const positions = {
@@ -489,7 +546,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     left: playerCardClone.style.left,
                     transform: playerCardClone.style.transform
                 },
-                originalPosition: playerCardClone.dataset.originalPosition
+                originalPosition: playerCardClone.dataset.originalPosition,
+                playerIndex: parseInt(playerIndex)
             };
     
             let savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
@@ -533,6 +591,5 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
 
 
