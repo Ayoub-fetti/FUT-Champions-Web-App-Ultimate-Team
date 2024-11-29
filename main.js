@@ -519,12 +519,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const playerIndex = cardClone.querySelector('.btn_delete').dataset.index;
             playerCardClone.dataset.index = playerIndex;
             
-            // Récupérer les joueurs du localStorage pour obtenir la position originale
             const joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
             const joueur = joueurs[playerIndex];
-            const originalPosition = joueur.position; // Position originale du joueur
+            const originalPosition = joueur.position;
 
-            // Vérifier si la position sélectionnée correspond à la position originale
             if (originalPosition !== selectedEmptyCard.dataset.position) {
                 alert(`Ce joueur est un ${originalPosition}. Veuillez le placer à sa position d'origine.`);
                 return;
@@ -534,18 +532,28 @@ document.addEventListener('DOMContentLoaded', function () {
             const positions = {
                 'Gk': { bottom: '-75%', left: '52%' },
                 'LB': { bottom: '-35%', left: '20%' },
-                'CB': { bottom: '-42%', left: '40%' }, // Premier CB
-                'CB2': { bottom: '-42%', left: '60%' }, // Deuxième CB (ajouté)
+                'CB': { bottom: '-42%', left: '40%' },
+                'CB2': { bottom: '-42%', left: '60%' },
                 'RB': { bottom: '-35%', left: '80%' },
-                'CM': { bottom: '25%', left: '30%' },
-                'LW': { bottom: '60%', left: '25%' },
-                'ST': { bottom: '65%', left: '50%' },
-                'LR': { bottom: '60%', left: '75%' }
+                'CM1': { bottom: '0%', left: '30%' },    // Premier CM
+                'CM2': { bottom: '-5%', left: '51%' },  // Deuxième CM
+                'CM3': { bottom: '0%', left: '70%' },    // Troisième CM
+                'LW': { bottom: '35%', left: '25%' },
+                'ST': { bottom: '38%', left: '50%' },
+                'LR': { bottom: '35%', left: '75%' }
             };
 
-            // Ajuster la position pour le deuxième CB
+            // Déterminer quelle position CM utiliser en fonction de la classe de l'empty-card
             let positionKey = originalPosition;
-            if (originalPosition === 'CB' && selectedEmptyCard.classList.contains('def3')) {
+            if (originalPosition === 'CM') {
+                if (selectedEmptyCard.classList.contains('mid1')) {
+                    positionKey = 'CM1';
+                } else if (selectedEmptyCard.classList.contains('mid2')) {
+                    positionKey = 'CM2';
+                } else if (selectedEmptyCard.classList.contains('mid3')) {
+                    positionKey = 'CM3';
+                }
+            } else if (originalPosition === 'CB' && selectedEmptyCard.classList.contains('def3')) {
                 positionKey = 'CB2';
             }
 
