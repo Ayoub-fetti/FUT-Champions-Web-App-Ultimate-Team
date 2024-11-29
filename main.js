@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
 // fonction pour afficher les cartes de joueur apres la creation du form (f.principale)
 // ************************************************************************************
-function displayPlayers() {
+function montrerJoueur() {
     const banqueSection = document.querySelector('.banque');
     banqueSection.innerHTML = ''; 
 
@@ -238,7 +238,7 @@ function displayPlayers() {
         deleteButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const index = this.getAttribute('data-index');
-                deletePlayer(index);
+                SupprimerJoueur(index);
             });
         });
                 // Ajouter l'ecouteur d'evenements pour les boutons de modification
@@ -246,7 +246,7 @@ function displayPlayers() {
                 editButtons.forEach(button => {
                 button.addEventListener('click', function() {
                 const index = this.getAttribute('data-index');
-                editPlayer(index);
+                modifierJoueur(index);
                     });
                 });
     }
@@ -260,7 +260,7 @@ function displayPlayers() {
 // Fonction pour supprimer un joueur
 // *********************************
 
-function deletePlayer(index) {
+function SupprimerJoueur(index) {
     // Supprimer de la banque (localStorage 'joueurs')
     let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
     joueurs.splice(index, 1);
@@ -316,14 +316,14 @@ function deletePlayer(index) {
     }
 
     // Rafraîchir l'affichage de la banque
-    displayPlayers();
+    montrerJoueur();
 }
 
 
 // Fonction pour modifier un joueur
 // ********************************
 
-function editPlayer(index) {
+function modifierJoueur(index) {
     let joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
     const joueur = joueurs[index];
 
@@ -468,12 +468,12 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
 
             localStorage.setItem('joueurs', JSON.stringify(joueurs));
             document.forms[0].reset();
-            displayPlayers();
+            montrerJoueur();
         };
 
         reader.readAsDataURL(file);
 });
-displayPlayers();
+montrerJoueur();
 
 
 
@@ -483,7 +483,7 @@ displayPlayers();
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    stockerPlayers();
+    stockerJoueur();
 
     const emptyCards = document.querySelectorAll('.empty-card');
     const modal = document.getElementById('joueur_modal');
@@ -508,7 +508,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const filteredPlayers = Array.from(document.querySelectorAll('.banque .joueur-card')).filter(card => card.dataset.position === position);
         filteredPlayers.forEach(card => {
             const cardClone = card.cloneNode(true);
-            cardClone.addEventListener('click', () => selectPlayer(cardClone));
+            cardClone.addEventListener('click', () => selectionnerJoueur(cardClone));
             playerCards.appendChild(cardClone);
         });
     }
@@ -516,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   
    
-    function selectPlayer(cardClone) {
+    function selectionnerJoueur(cardClone) {
         if (selectedEmptyCard) {
             const playerCardClone = cardClone.cloneNode(true);
             const playerIndex = cardClone.querySelector('.btn_delete').dataset.index;
@@ -576,7 +576,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     
-    function stockerPlayers() {
+    function stockerJoueur() {
         const savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
         savedPlayers.forEach(player => {
             const emptyCard = document.querySelector(`.empty-card[data-position="${player.position}"]`);
