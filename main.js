@@ -308,7 +308,7 @@ function SupprimerJoueur(index) {
                 });
             }
 
-            // Ajouter l'écouteur d'événements pour la modal
+            // Ajouter l'couteur d'événements pour la modal
             emptyCard.addEventListener('click', () => openModal(emptyCard));
 
             playerOnPitch.parentNode.replaceChild(emptyCard, playerOnPitch);
@@ -491,9 +491,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const playerCards = document.getElementById('playerCards');
     let selectedEmptyCard = null;
 
-    function openModal(emptyCard) {
-        selectedEmptyCard = emptyCard;
-        const position = emptyCard.dataset.position;
+    function openModal(element) {
+        selectedEmptyCard = element;
+        let position;
+        
+        if (element.classList.contains('joueur-card')) {
+            // Si c'est une carte de joueur, obtenir la position depuis le span.position
+            position = element.querySelector('.position').textContent;
+        } else {
+            // Si c'est une empty-card, obtenir la position depuis data-position
+            position = element.dataset.position;
+        }
+        
         loadPlayerCards(position);
         modal.style.display = 'block';
     }
@@ -506,8 +515,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // afficher les joueur dans le modal
     function loadPlayerCards(position) {
         playerCards.innerHTML = '';
-        const filteredPlayers = Array.from(document.querySelectorAll('.banque .joueur-card')).filter(card => card.dataset.position === position);
-        filteredPlayers.forEach(card => {
+        
+        // Récupérer tous les joueurs de la banque avec la bonne position
+        const allPlayers = Array.from(document.querySelectorAll('.banque .joueur-card'))
+            .filter(card => card.dataset.position === position);
+        
+        // Récupérer les indices des joueurs déjà placés sur le terrain
+        const savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+        const placedPlayerIndices = savedPlayers.map(player => player.playerIndex.toString());
+        
+        // Filtrer pour exclure les joueurs déjà placés
+        const availablePlayers = allPlayers.filter(card => {
+            const playerIndex = card.querySelector('.btn_edit').dataset.index;
+            return !placedPlayerIndices.includes(playerIndex);
+        });
+        
+        // Afficher les joueurs disponibles dans la modal
+        availablePlayers.forEach(card => {
             const cardClone = card.cloneNode(true);
             cardClone.addEventListener('click', () => selectionnerJoueur(cardClone));
             playerCards.appendChild(cardClone);
@@ -524,11 +548,23 @@ document.addEventListener('DOMContentLoaded', function () {
             const joueur = joueurs[playerIndex];
             const originalPosition = joueur.position;
 
-            if (originalPosition !== selectedEmptyCard.dataset.position) {
-                alert(`Ce joueur est un ${originalPosition}. Veuillez le placer à sa position d'origine.`);
-                return;
+            // Vérifier si c'est un remplacement
+            const existingCard = selectedEmptyCard.classList.contains('joueur-card');
+            if (existingCard) {
+                // Supprimer l'ancien joueur des savedPlayers
+                let savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+                const oldPlayerIndex = selectedEmptyCard.dataset.index;
+                savedPlayers = savedPlayers.filter(player => player.playerIndex !== parseInt(oldPlayerIndex));
+                localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
             }
-            
+
+            // Ajouter les classes nécessaires
+            playerCardClone.className = 'joueur-card player';
+            playerCardClone.dataset.position = originalPosition;
+
+            // Ajouter l'écouteur d'événements pour le nouveau joueur
+            playerCardClone.addEventListener('click', () => openModal(playerCardClone));
+
             // Définir les positions spécifiques pour chaque emplacement
             const positions = {
                 'Gk': { bottom: '-75%', left: '52%' },
@@ -584,7 +620,10 @@ document.addEventListener('DOMContentLoaded', function () {
             savedPlayers.push(playerData);
             localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
 
-            selectedEmptyCard.parentNode.replaceChild(playerCardClone, selectedEmptyCard);
+            // Remplacer l'ancienne carte et appliquer l'écouteur d'événements
+            const newCard = selectedEmptyCard.parentNode.replaceChild(playerCardClone, selectedEmptyCard);
+            playerCardClone.addEventListener('click', () => openModal(playerCardClone));
+            
             closeModal();
         }
     }
@@ -595,14 +634,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const emptyCard = document.querySelector(`.empty-card[data-position="${player.position}"]`);
             if (emptyCard) {
                 const playerCard = document.createElement('div');
-                playerCard.className = 'joueur-card';
+                playerCard.className = 'joueur-card player';
+                playerCard.dataset.position = player.position;
                 playerCard.innerHTML = player.content;
-    
-                // Appliquer les styles sauvegardés
+                playerCard.dataset.index = player.playerIndex;
+                
                 if (player.styles) {
                     Object.assign(playerCard.style, player.styles);
                 }
-    
+                
+                // Ajouter l'écouteur d'événements
+                playerCard.addEventListener('click', () => openModal(playerCard));
+                
                 emptyCard.parentNode.replaceChild(playerCard, emptyCard);
             }
         });
