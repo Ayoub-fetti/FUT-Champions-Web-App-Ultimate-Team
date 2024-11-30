@@ -53,8 +53,6 @@ const countryFlags = {
     'uruguay': 'https://media-4.api-sports.io/flags/uy.svg',
     'usa': 'https://media-4.api-sports.io/flags/us.svg'
 };
-
-
 // founction pour modifier le joueur du terrain en relation avec fonction du banque
 // ********************************************************************************
 
@@ -91,7 +89,7 @@ function playerCardNouveaux(joueur) {
         </div>`;
 }
 
-// position des joueurs en fonction de la formation
+// position des cartes vides en fonction de la formation
 // *************************************************
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -180,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         
-// fonction pour afficher les cartes de joueur apres la creation du form (f.principale)
+// fonction pour afficher les cartes de joueur en banque apres la creation du form (f.principale)
 // ************************************************************************************
 function montrerJoueur() {
     const banqueSection = document.querySelector('.banque');
@@ -621,3 +619,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+// j'ai utiliser dans le total 10 fonctions 
+
+
+
+
