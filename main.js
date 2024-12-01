@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const formationSelect = document.getElementById('formation');
     
     function updatePositions(formation) {
-        // Positions de base pour chaque formation
         const positions = {
             '1-4-4-2': {
                 'Gk': { bottom: '-45%', left: '49.5%' },
@@ -134,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ],
                 'LW': { bottom: '65%', left: '35%' },
                 'ST': { bottom: '65%', left: '65%' },
-                'LR': { display: 'none' }
+                'LR': { bottom: '30%', left: '80%' }
             },
             '1-4-3-3': {
                 'Gk': { bottom: '-45%', left: '49.5%' },
@@ -153,6 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
 
+        const formationPositions = positions[formation];
+
         // Fonction pour appliquer les styles
         function applyStyles(element, styles) {
             if (element && styles) {
@@ -164,65 +165,91 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        const formationPositions = positions[formation];
+        // Mis a jour les positions pour les cartes vides et remplies
+        function updateElementPosition(selector, position) {
+            // Chercher d'abord une carte remplie
+            let element = document.querySelector(`.players .joueur-card[data-position="${selector}"]`);
+            // Si pas trouve, chercher une carte vide
+            if (!element) {
+                element = document.querySelector(`.players .empty-card[data-position="${selector}"]`);
+            }
+            if (element) {
+                applyStyles(element, position);
+                
+                // Mettre a jour savedPlayers si c'est une carte remplie
+                if (element.classList.contains('joueur-card')) {
+                    let savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+                    const playerIndex = element.dataset.index;
+                    savedPlayers = savedPlayers.map(player => {
+                        if (player.playerIndex === parseInt(playerIndex)) {
+                            return {
+                                ...player,
+                                styles: {
+                                    position: element.style.position,
+                                    bottom: element.style.bottom,
+                                    left: element.style.left,
+                                    transform: element.style.transform,
+                                    display: element.style.display
+                                }
+                            };
+                        }
+                        return player;
+                    });
+                    localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
+                }
+            }
+        }
 
-        // Appliquer les positions pour chaque type de carte
-        // Gardien
-        const goalkeeper = document.querySelector('.goalkeeper, .players .joueur-card[data-position="Gk"]');
-        applyStyles(goalkeeper, formationPositions['Gk']);
+        // Mettre a jour les positions pour chaque type de carte
+        updateElementPosition('Gk', formationPositions['Gk']);
+        updateElementPosition('LB', formationPositions['LB']);
+        
+        // Gerer les deux CB separement
+        const cbs = document.querySelectorAll('.players [data-position="CB"]');
+        if (cbs.length >= 2) {
+            applyStyles(cbs[0], formationPositions['CB']);
+            applyStyles(cbs[1], formationPositions['CB2']);  // Utiliser la position CB2 pour le deuxième CB
+        }
+        
+        updateElementPosition('RB', formationPositions['RB']);
 
-        // Défenseurs
-        const defenders = {
-            'LB': document.querySelector('.def1, .players .joueur-card[data-position="LB"]'),
-            'CB': document.querySelector('.def2, .players .joueur-card[data-position="CB"]'),
-            'CB2': document.querySelector('.def3, .players .joueur-card[data-position="CB"]'),
-            'RB': document.querySelector('.def4, .players .joueur-card[data-position="RB"]')
-        };
-
-        Object.entries(defenders).forEach(([pos, element]) => {
-            applyStyles(element, formationPositions[pos]);
-        });
-
-        // Milieux
-        const midfielders = [
-            document.querySelector('.mid1, .players .joueur-card[data-position="CM"]'),
-            document.querySelector('.mid2, .players .joueur-card[data-position="CM"]'),
-            document.querySelector('.mid3, .players .joueur-card[data-position="CM"]'),
-            document.querySelector('.mid4, .players .joueur-card[data-position="CM"]')
-        ];
-
-        midfielders.forEach((midfielder, index) => {
-            if (midfielder && formationPositions['CM'][index]) {
-                applyStyles(midfielder, formationPositions['CM'][index]);
-            } else if (midfielder) {
-                midfielder.style.display = 'none';
+        // Mettre a jour les positions des milieux
+        const cmPositions = formationPositions['CM'];
+        const cmElements = Array.from(document.querySelectorAll('.players .joueur-card[data-position="CM"], .players .empty-card[data-position="CM"]'));
+        cmElements.forEach((element, index) => {
+            if (element && cmPositions[index]) {
+                applyStyles(element, cmPositions[index]);
+                if (element.classList.contains('joueur-card')) {
+                    updateSavedPlayerPosition(element);
+                }
+            } else if (element) {
+                element.style.display = 'none';
             }
         });
 
-        // Attaquants
-        const forwards = {
-            'LW': document.querySelector('.st1, .players .joueur-card[data-position="LW"]'),
-            'ST': document.querySelector('.st2, .players .joueur-card[data-position="ST"]'),
-            'LR': document.querySelector('.st3, .players .joueur-card[data-position="LR"]')
-        };
+        // Mettre a jour les positions des attaquants
+        updateElementPosition('LW', formationPositions['LW']);
+        updateElementPosition('ST', formationPositions['ST']);
+        updateElementPosition('LR', formationPositions['LR']);
+    }
 
-        Object.entries(forwards).forEach(([pos, element]) => {
-            applyStyles(element, formationPositions[pos]);
-        });
-
-        // Mettre à jour savedPlayers dans localStorage
-        const savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
-        savedPlayers.forEach(player => {
-            const card = document.querySelector(`.players .joueur-card[data-index="${player.playerIndex}"]`);
-            if (card) {
-                player.styles = {
-                    position: card.style.position,
-                    bottom: card.style.bottom,
-                    left: card.style.left,
-                    transform: card.style.transform,
-                    display: card.style.display
+    function updateSavedPlayerPosition(element) {
+        let savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+        const playerIndex = element.dataset.index;
+        savedPlayers = savedPlayers.map(player => {
+            if (player.playerIndex === parseInt(playerIndex)) {
+                return {
+                    ...player,
+                    styles: {
+                        position: element.style.position,
+                        bottom: element.style.bottom,
+                        left: element.style.left,
+                        transform: element.style.transform,
+                        display: element.style.display
+                    }
                 };
             }
+            return player;
         });
         localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
     }

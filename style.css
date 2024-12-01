@@ -246,7 +246,7 @@ nav{
 
 
 .joueur-card {
-    width: 200px;
+    width: auto;
     height: 300px; /* Hauteur fixe ajoutée */
     margin: 10px;
     cursor: pointer;
@@ -447,25 +447,7 @@ nav{
     color: #3A3319;
 
 }
-.switch-container {
-    position: absolute;
-    top: -90px; /* Ajustez selon la position souhaitée */
-    left: 60px;
-    transform: translateX(-50%);
-    z-index: 100;
-    cursor: pointer;
-}
 
-#switch-icon {
-    font-size: 30px;
-    color: #DFBE6F;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-#switch-icon:hover {
-    color: #2F9B75;
-    transform: rotate(90deg);
-}
 
 
 
@@ -519,11 +501,7 @@ nav{
 /* Media Queries pour les tablettes (max-width: 770px) */
 @media screen and (max-width: 770px) {
 
-    .switch-container {
-        position: absolute;
-        top: -150px; /* Ajustez selon la position souhaitée */
-        left: 20%;
-    }
+
 
     .container {
         width: 90%;
@@ -626,9 +604,6 @@ nav{
         margin-right: 120px;
         width: 50%;
         max-width: 600px;
-    }
-    #switch-icon {
-        font-size: 20px;
     }
     nav{
         display: none;
