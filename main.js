@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // formation 1-4-3-3 par default
-    updatePositions('1-4-4-2');
+    updatePositions('1-4-3-3');
 });
 
 
