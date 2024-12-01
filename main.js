@@ -57,6 +57,27 @@ const countryFlags = {
 // ********************************************************************************
 
 function playerCardNouveaux(joueur) {
+    const isGoalkeeper = joueur.position === 'Gk';
+    const statsLeft = isGoalkeeper ? {
+        'DIV': joueur.stats.DIV || joueur.stats.PAC,
+        'HAN': joueur.stats.HAN || joueur.stats.SHO,
+        'KIC': joueur.stats.KIC || joueur.stats.PAS
+    } : {
+        'PAC': joueur.stats.PAC,
+        'SHO': joueur.stats.SHO,
+        'PAS': joueur.stats.PAS
+    };
+    
+    const statsRight = isGoalkeeper ? {
+        'REF': joueur.stats.REF || joueur.stats.DRI,
+        'SPE': joueur.stats.SPE || joueur.stats.DEF,
+        'POS': joueur.stats.POS || joueur.stats.PHY
+    } : {
+        'DRI': joueur.stats.DRI,
+        'DEF': joueur.stats.DEF,
+        'PHY': joueur.stats.PHY
+    };
+
     return `
         <div class="card-container">
             <div class="card-background">
@@ -74,14 +95,14 @@ function playerCardNouveaux(joueur) {
                     <div class="player-name">${joueur.joueurNom}</div>
                     <div class="stats-container">
                         <div class="stats-left">
-                            <div class="stat"><span>${joueur.stats.PAC}</span> PAC</div>
-                            <div class="stat"><span>${joueur.stats.SHO}</span> SHO</div>
-                            <div class="stat"><span>${joueur.stats.PAS}</span> PAS</div>
+                            ${Object.entries(statsLeft).map(([key, value]) => 
+                                `<div class="stat"><span>${value}</span> ${key}</div>`
+                            ).join('')}
                         </div>
                         <div class="stats-right">
-                            <div class="stat"><span>${joueur.stats.DRI}</span> DRI</div>
-                            <div class="stat"><span>${joueur.stats.DEF}</span> DEF</div>
-                            <div class="stat"><span>${joueur.stats.PHY}</span> PHY</div>
+                            ${Object.entries(statsRight).map(([key, value]) => 
+                                `<div class="stat"><span>${value}</span> ${key}</div>`
+                            ).join('')}
                         </div>
                     </div>
                 </div>
@@ -97,68 +118,113 @@ document.addEventListener('DOMContentLoaded', function() {
     const formationSelect = document.getElementById('formation');
     
     function updatePositions(formation) {
+        // Positions de base pour chaque formation
+        const positions = {
+            '1-4-4-2': {
+                'Gk': { bottom: '-45%', left: '49.5%' },
+                'LB': { bottom: '-8%', left: '20%' },
+                'CB': { bottom: '-15%', left: '40%' },
+                'CB2': { bottom: '-15%', left: '60%' },
+                'RB': { bottom: '-8%', left: '80%' },
+                'CM': [
+                    { bottom: '30%', left: '20%' },
+                    { bottom: '30%', left: '40%' },
+                    { bottom: '30%', left: '60%' },
+                    { bottom: '30%', left: '80%' }
+                ],
+                'LW': { bottom: '65%', left: '35%' },
+                'ST': { bottom: '65%', left: '65%' },
+                'LR': { display: 'none' }
+            },
+            '1-4-3-3': {
+                'Gk': { bottom: '-45%', left: '49.5%' },
+                'LB': { bottom: '-8%', left: '20%' },
+                'CB': { bottom: '-15%', left: '40%' },
+                'CB2': { bottom: '-15%', left: '60%' },
+                'RB': { bottom: '-8%', left: '80%' },
+                'CM': [
+                    { bottom: '25%', left: '30%' },
+                    { bottom: '20%', left: '49.2%' },
+                    { bottom: '25%', left: '70%' }
+                ],
+                'LW': { bottom: '60%', left: '25%' },
+                'ST': { bottom: '65%', left: '50%' },
+                'LR': { bottom: '60%', left: '75%', display: 'block' }
+            }
+        };
 
-        // Gk (meme position)
-        const goalkeeper = document.querySelector('.goalkeeper');
-
-        // positin du GK
-        goalkeeper.style.cssText = 'bottom: -45%; left: 49.5%;';
-
-        // CB (meme position)
-        const def1 = document.querySelector('.def1');
-        const def2 = document.querySelector('.def2');
-        const def3 = document.querySelector('.def3');
-        const def4 = document.querySelector('.def4');
-
-        // Position des CB
-        def1.style.cssText = 'bottom: -8%; left: 20%;';  // BL
-        def2.style.cssText = 'bottom: -15%; left: 40%;';  // CB
-        def3.style.cssText = 'bottom: -15%; left: 60%;';  // CB
-        def4.style.cssText = 'bottom: -8%; left: 80%;';  // BR
-
-        // CM et ST 
-        const mid1 = document.querySelector('.mid1');
-        const mid2 = document.querySelector('.mid2');
-        const mid3 = document.querySelector('.mid3');
-        const mid4 = document.querySelector('.mid4');
-        const fw1 = document.querySelector('.st1');
-        const fw2 = document.querySelector('.st2');
-        const fw3 = document.querySelector('.st3');
-
-        if (formation === '1-4-4-2') {
-
-            // 4-4-2 Formation ***************************************
-            // ******************************************************
-
-            // CM
-            mid1.style.cssText = 'bottom: 30%; left: 20%;';
-            mid2.style.cssText = 'bottom: 30%; left: 40%;';
-            mid3.style.cssText = 'bottom: 30%; left: 60%;';
-            mid4.style.cssText = 'bottom: 30%; left: 80%;';
-            mid4.style.display = 'block';
-            
-            // ST
-            fw1.style.cssText = 'bottom: 65%; left: 35%;';
-            fw2.style.cssText = 'bottom: 65%; left: 65%;';
-            fw3.style.display = 'none';  // Cacher le 3 ST
-
-        } else if (formation === '1-4-3-3') {
-
-            // 4-3-3 Formation***********************************
-            // **************************************************
-
-            // CM
-            mid1.style.cssText = 'bottom: 25%; left: 30%;';
-            mid2.style.cssText = 'bottom: 20%; left: 49.2%;';
-            mid3.style.cssText = 'bottom: 25%; left: 70%;';
-            mid4.style.display = 'none';  // Cacher le 4 CM
-            
-            // ST
-            fw1.style.cssText = 'bottom: 60%; left: 25%;';
-            fw2.style.cssText = 'bottom: 65%; left: 50%;';
-            fw3.style.cssText = 'bottom: 60%; left: 75%;';
-            fw3.style.display = 'block';  // Montrer le 3 ST
+        // Fonction pour appliquer les styles
+        function applyStyles(element, styles) {
+            if (element && styles) {
+                Object.assign(element.style, styles);
+                element.style.position = 'absolute';
+                if (!styles.hasOwnProperty('transform')) {
+                    element.style.transform = 'translate(-50%, -50%)';
+                }
+            }
         }
+
+        const formationPositions = positions[formation];
+
+        // Appliquer les positions pour chaque type de carte
+        // Gardien
+        const goalkeeper = document.querySelector('.goalkeeper, .players .joueur-card[data-position="Gk"]');
+        applyStyles(goalkeeper, formationPositions['Gk']);
+
+        // Défenseurs
+        const defenders = {
+            'LB': document.querySelector('.def1, .players .joueur-card[data-position="LB"]'),
+            'CB': document.querySelector('.def2, .players .joueur-card[data-position="CB"]'),
+            'CB2': document.querySelector('.def3, .players .joueur-card[data-position="CB"]'),
+            'RB': document.querySelector('.def4, .players .joueur-card[data-position="RB"]')
+        };
+
+        Object.entries(defenders).forEach(([pos, element]) => {
+            applyStyles(element, formationPositions[pos]);
+        });
+
+        // Milieux
+        const midfielders = [
+            document.querySelector('.mid1, .players .joueur-card[data-position="CM"]'),
+            document.querySelector('.mid2, .players .joueur-card[data-position="CM"]'),
+            document.querySelector('.mid3, .players .joueur-card[data-position="CM"]'),
+            document.querySelector('.mid4, .players .joueur-card[data-position="CM"]')
+        ];
+
+        midfielders.forEach((midfielder, index) => {
+            if (midfielder && formationPositions['CM'][index]) {
+                applyStyles(midfielder, formationPositions['CM'][index]);
+            } else if (midfielder) {
+                midfielder.style.display = 'none';
+            }
+        });
+
+        // Attaquants
+        const forwards = {
+            'LW': document.querySelector('.st1, .players .joueur-card[data-position="LW"]'),
+            'ST': document.querySelector('.st2, .players .joueur-card[data-position="ST"]'),
+            'LR': document.querySelector('.st3, .players .joueur-card[data-position="LR"]')
+        };
+
+        Object.entries(forwards).forEach(([pos, element]) => {
+            applyStyles(element, formationPositions[pos]);
+        });
+
+        // Mettre à jour savedPlayers dans localStorage
+        const savedPlayers = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+        savedPlayers.forEach(player => {
+            const card = document.querySelector(`.players .joueur-card[data-index="${player.playerIndex}"]`);
+            if (card) {
+                player.styles = {
+                    position: card.style.position,
+                    bottom: card.style.bottom,
+                    left: card.style.left,
+                    transform: card.style.transform,
+                    display: card.style.display
+                };
+            }
+        });
+        localStorage.setItem('savedPlayers', JSON.stringify(savedPlayers));
     }
 
     // ecouteur d'evenement pour le changement de formation
@@ -167,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // formation 1-4-3-3 par default
-    updatePositions('1-4-3-3');
+    updatePositions('1-4-4-2');
 });
 
 
@@ -187,6 +253,27 @@ function montrerJoueur() {
     const joueurs = JSON.parse(localStorage.getItem('joueurs')) || [];
 
     joueurs.forEach((joueur, index) => {
+        const isGoalkeeper = joueur.position === 'Gk';
+        const statsLeft = isGoalkeeper ? {
+            'DIV': joueur.stats.DIV || joueur.stats.PAC,
+            'HAN': joueur.stats.HAN || joueur.stats.SHO,
+            'KIC': joueur.stats.KIC || joueur.stats.PAS
+        } : {
+            'PAC': joueur.stats.PAC,
+            'SHO': joueur.stats.SHO,
+            'PAS': joueur.stats.PAS
+        };
+        
+        const statsRight = isGoalkeeper ? {
+            'REF': joueur.stats.REF || joueur.stats.DRI,
+            'SPE': joueur.stats.SPE || joueur.stats.DEF,
+            'POS': joueur.stats.POS || joueur.stats.PHY
+        } : {
+            'DRI': joueur.stats.DRI,
+            'DEF': joueur.stats.DEF,
+            'PHY': joueur.stats.PHY
+        };
+
         const joueurCard = document.createElement('div');
         joueurCard.classList.add('joueur-card');
         joueurCard.dataset.position = joueur.position;
@@ -213,14 +300,14 @@ function montrerJoueur() {
                         
                         <div class="stats-container">
                             <div class="stats-left">
-                                <div class="stat"><span>${joueur.stats.PAC}</span> PAC</div>
-                                <div class="stat"><span>${joueur.stats.SHO}</span> SHO</div>
-                                <div class="stat"><span>${joueur.stats.PAS}</span> PAS</div>
+                                ${Object.entries(statsLeft).map(([key, value]) => 
+                                    `<div class="stat"><span>${value}</span> ${key}</div>`
+                                ).join('')}
                             </div>
                             <div class="stats-right">
-                                <div class="stat"><span>${joueur.stats.DRI}</span> DRI</div>
-                                <div class="stat"><span>${joueur.stats.DEF}</span> DEF</div>
-                                <div class="stat"><span>${joueur.stats.PHY}</span> PHY</div>
+                                ${Object.entries(statsRight).map(([key, value]) => 
+                                    `<div class="stat"><span>${value}</span> ${key}</div>`
+                                ).join('')}
                             </div>
                         
                         <button class="btn_delete" data-index="${index}">X</button>
@@ -663,17 +750,38 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+//  ecouteur d'evénements pour changer placeholder des stats si le jouuer et gardien
+// *********************************************************************************
 
-
-
-
-
-
-
-
-
-
-// j'ai utiliser dans le total 10 fonctions 
+document.getElementById('position').addEventListener('change', function() {
+    const isGoalkeeper = this.value === 'Gk';
+    
+    const propriete1 = document.querySelector('.propriete1');
+    const inputs1 = propriete1.querySelectorAll('input');
+    
+    const propriete2 = document.querySelector('.propriete2');
+    const inputs2 = propriete2.querySelectorAll('input');
+    
+    if (isGoalkeeper) {
+        // Changer les placeholders pour les gardiens
+        inputs1[0].placeholder = 'DIV (Plongeon)';
+        inputs1[1].placeholder = 'HAN (Mains)';
+        inputs1[2].placeholder = 'KIC (Tir)';
+        
+        inputs2[0].placeholder = 'REF (Réflexes)';
+        inputs2[1].placeholder = 'SPE (Vitesse)';
+        inputs2[2].placeholder = 'POS (Position)';
+    } else {
+        // Remettre les placeholders par défaut pour les autres positions
+        inputs1[0].placeholder = 'PAC (Vitesse)';
+        inputs1[1].placeholder = 'SHO (Tirs)';
+        inputs1[2].placeholder = 'PAS (Passes)';
+        
+        inputs2[0].placeholder = 'DRI (Dribble)';
+        inputs2[1].placeholder = 'DEF (Défense)';
+        inputs2[2].placeholder = 'PHY (Physique)';
+    }
+});
 
 
 
