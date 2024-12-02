@@ -53,8 +53,8 @@ const countryFlags = {
     'uruguay': 'https://media-4.api-sports.io/flags/uy.svg',
     'usa': 'https://media-4.api-sports.io/flags/us.svg'
 };
-// founction pour modifier le joueur du terrain en relation avec fonction du banque
-// ********************************************************************************
+// quand je modifier une carte du jouuer c'est la deuxieme function pour afficher le jouuer , car c'est comme je remplie le formulaire une deuxieme fois
+// *****************************************************************************************************************************************************
 
 function playerCardNouveaux(joueur) {
     const isGoalkeeper = joueur.position === 'Gk';
@@ -166,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Mis a jour les positions pour les cartes vides et remplies
+
         function updateElementPosition(selector, position) {
             // Chercher d'abord une carte remplie
             let element = document.querySelector(`.players .joueur-card[data-position="${selector}"]`);
@@ -204,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateElementPosition('Gk', formationPositions['Gk']);
         updateElementPosition('LB', formationPositions['LB']);
         
-        // Gerer les deux CB separement
+        // Gerer les deux CB CB1 et CB2 separement
         const cbs = document.querySelectorAll('.players [data-position="CB"]');
         if (cbs.length >= 2) {
             applyStyles(cbs[0], formationPositions['CB']);
@@ -471,14 +472,36 @@ function modifierJoueur(index) {
 document.querySelector('.btn_add').addEventListener('click', function(event) {
     event.preventDefault();
 
+    // Ajouter la validation des valeurs autorisées
+    const validPositions = ['Gk', 'LB', 'CB', 'RB', 'CM', 'LW', 'ST', 'LR'];
+    const validNationalities = Object.keys(countryFlags);
+    const validClubs = Object.keys(clubLogos);
+
+    const position = document.getElementById('position').value;
+    const nationalite = document.getElementById('nationalite').value;
+    const club = document.getElementById('club').value;
+
+    // Vérifier si les valeurs sont valides
+    if (!validPositions.includes(position)) {
+        alert("Position invalide. Veuillez sélectionner une position valide.");
+        return;
+    }
+
+    if (!validNationalities.includes(nationalite)) {
+        alert("Nationalité invalide. Veuillez sélectionner une nationalité valide.");
+        return;
+    }
+
+    if (!validClubs.includes(club)) {
+        alert("Club invalide. Veuillez sélectionner un club valide.");
+        return;
+    }
+
     const index = this.getAttribute('data-index');
 
     // Recuperer les valeurs du form
     const formation = document.getElementById('formation').value;
     const joueurNom = document.querySelector('input[placeholder="Nom du joueur"]').value;
-    const position = document.getElementById('position').value;
-    const nationalite = document.getElementById('nationalite').value;
-    const club = document.getElementById('club').value;
     const PAC = document.querySelector('.PAC').value;
     const SHO = document.querySelector('.SHO').value;
     const PAS = document.querySelector('.PAS').value;
@@ -512,6 +535,12 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
             alert("Veuillez sélectionner une image");
             return;
         }
+
+        if (!joueurNom || /^\d+$/.test(joueurNom)) {
+            alert("le nom du jouuer ne doit pas etre un numero");
+            return;
+        }
+
     
 
     // Si toutes les validations OK , continuer avec le code existant
