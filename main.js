@@ -536,11 +536,8 @@ document.querySelector('.btn_add').addEventListener('click', function(event) {
             return;
         }
 
-        if (!joueurNom || /^\d+$/.test(joueurNom)) {
-            alert("le nom du jouuer ne doit pas etre un numero");
-            return;
-        }
 
+       
     
 
     // Si toutes les validations OK , continuer avec le code existant
