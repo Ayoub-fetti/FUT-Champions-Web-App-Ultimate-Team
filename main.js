@@ -655,6 +655,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function selectionnerJoueur(cardClone) {
         if (selectedEmptyCard) {
             const playerCardClone = cardClone.cloneNode(true);
+            
+            // Supprimer les boutons de suppression et d'édition de la carte sur le terrain
+            const deleteBtn = playerCardClone.querySelector('.btn_delete');
+            const editBtn = playerCardClone.querySelector('.btn_edit');
+            if (deleteBtn) deleteBtn.remove();
+            if (editBtn) editBtn.remove();
+            
             const playerIndex = cardClone.querySelector('.btn_edit').dataset.index;
             playerCardClone.dataset.index = playerIndex;
             
@@ -751,13 +758,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 playerCard.className = 'joueur-card player';
                 playerCard.dataset.position = player.position;
                 playerCard.innerHTML = player.content;
+                
+                // Supprimer les boutons de suppression et d'édition après avoir défini le innerHTML
+                const deleteBtn = playerCard.querySelector('.btn_delete');
+                const editBtn = playerCard.querySelector('.btn_edit');
+                if (deleteBtn) deleteBtn.remove();
+                if (editBtn) editBtn.remove();
+                
                 playerCard.dataset.index = player.playerIndex;
                 
                 if (player.styles) {
                     Object.assign(playerCard.style, player.styles);
                 }
                 
-                // Ajouter l'écouteur d'événements
+                // Ajouter l'ecouteur d'evenements
                 playerCard.addEventListener('click', () => openModal(playerCard));
                 
                 emptyCard.parentNode.replaceChild(playerCard, emptyCard);
