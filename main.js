@@ -120,35 +120,35 @@ document.addEventListener('DOMContentLoaded', function() {
     function updatePositions(formation) {
         const positions = {
             '1-4-4-2': {
-                'Gk': { bottom: '-45%', left: '49.5%' },
-                'LB': { bottom: '-8%', left: '20%' },
-                'CB': { bottom: '-15%', left: '40%' },
-                'CB2': { bottom: '-15%', left: '60%' },
-                'RB': { bottom: '-8%', left: '80%' },
+                'Gk': { bottom: '-70%', left: '49.5%' },
+                'LB': { bottom: '-35%', left: '20%' },
+                'CB': { bottom: '-35%', left: '40%' },
+                'CB2': { bottom: '-35%', left: '60%' },
+                'RB': { bottom: '-35%', left: '80%' },
                 'CM': [
-                    { bottom: '30%', left: '20%' },
-                    { bottom: '30%', left: '40%' },
-                    { bottom: '30%', left: '60%' },
-                    { bottom: '30%', left: '80%' }
+                    { bottom: '0%', left: '20%' },
+                    { bottom: '0%', left: '40%' },
+                    { bottom: '0%', left: '60%' },
+                    { bottom: '0%', left: '80%' }
                 ],
-                'LW': { bottom: '65%', left: '35%' },
-                'ST': { bottom: '65%', left: '65%' },
-                'LR': { bottom: '30%', left: '80%' }
+                'LW': { bottom: '35%', left: '35%' },
+                'ST': { bottom: '35%', left: '65%' },
+                'LR': { bottom: '0%', left: '80%' }
             },
             '1-4-3-3': {
-                'Gk': { bottom: '-45%', left: '49.5%' },
-                'LB': { bottom: '-8%', left: '20%' },
-                'CB': { bottom: '-15%', left: '40%' },
-                'CB2': { bottom: '-15%', left: '60%' },
-                'RB': { bottom: '-8%', left: '80%' },
+                'Gk': { bottom: '-60%', left: '49.5%' },
+                'LB': { bottom: '-15%', left: '10%' },
+                'CB': { bottom: '-28%', left: '40%' },
+                'CB2': { bottom: '-28%', left: '60%' },
+                'RB': { bottom: '-15%', left: '90%' },
                 'CM': [
-                    { bottom: '25%', left: '30%' },
-                    { bottom: '20%', left: '49.2%' },
-                    { bottom: '25%', left: '70%' }
+                    { bottom: '5%', left: '30%' },
+                    { bottom: '5%', left: '49.2%' },
+                    { bottom: '5%', left: '70%' }
                 ],
-                'LW': { bottom: '60%', left: '25%' },
-                'ST': { bottom: '65%', left: '50%' },
-                'LR': { bottom: '60%', left: '75%', display: 'block' }
+                'LW': { bottom: '40%', left: '25%' },
+                'ST': { bottom: '40%', left: '50%' },
+                'LR': { bottom: '40%', left: '75%', display: 'block' }
             }
         };
 
@@ -681,16 +681,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Définir les positions spécifiques pour chaque emplacement
             const positions = {
-                'Gk': { bottom: '-75%', left: '52%' },
+                'Gk': { bottom: '-70%', left: '52%' },
                 'LB': { bottom: '-35%', left: '20%' },
-                'CB': { bottom: '-42%', left: '40%' },
-                'CB2': { bottom: '-42%', left: '60%' },
+                'CB': { bottom: '-35%', left: '40%' },
+                'CB2': { bottom: '-35%', left: '60%' },
                 'RB': { bottom: '-35%', left: '80%' },
                 'CM1': { bottom: '0%', left: '30%' },    // Premier CM
-                'CM2': { bottom: '-5%', left: '51%' },  // Deuxième CM
+                'CM2': { bottom: '0%', left: '51%' },  // Deuxième CM
                 'CM3': { bottom: '0%', left: '70%' },    // Troisième CM
                 'LW': { bottom: '35%', left: '25%' },
-                'ST': { bottom: '38%', left: '50%' },
+                'ST': { bottom: '35%', left: '50%' },
                 'LR': { bottom: '35%', left: '75%' }
             };
 
